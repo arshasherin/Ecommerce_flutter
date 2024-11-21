@@ -1,11 +1,16 @@
+import 'package:ecommerce_flutter/views/authentication/authVM.dart';
+import 'package:ecommerce_flutter/views/authentication/login.dart';
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
 class AhomeScreen extends StatelessWidget {
-    static const String routeName = '/a-home-screen';
+  static const String routeName = '/a-home-screen';
   const AhomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Get an instance of AuthVM
+    final authVM = Provider.of<AuthVM>(context, listen: false);
+
     return Scaffold(
         appBar: AppBar(
           title: const Text("Admin Dashboard"),
@@ -15,11 +20,11 @@ class AhomeScreen extends StatelessWidget {
           child: ListView(
             padding: EdgeInsets.zero,
             children: [
-             const DrawerHeader(
+              const DrawerHeader(
                 decoration: BoxDecoration(
                   color: Colors.blueGrey,
                 ),
-                child:  Text(
+                child: Text(
                   'Admin Menu',
                   style: TextStyle(
                     color: Colors.white,
@@ -45,16 +50,29 @@ class AhomeScreen extends StatelessWidget {
                 leading: const Icon(Icons.settings),
                 title: const Text('Manage Products'),
                 onTap: () {
-                  // Navigate to Settings
+                  // Navigate to Manage Products
+                },
+              ),
+              const Divider(), // Divider to separate logout option
+              ListTile(
+                leading: const Icon(Icons.logout),
+                title: const Text('Logout'),
+                onTap: () async {
+                  // Call the logout function
+                  await authVM.logoutUser();
+                  // Navigate back to Login Screen after logout
+                  Navigator.pushReplacementNamed(context, LoginScreen.routeName);
                 },
               ),
             ],
           ),
         ),
         body: const Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Center(
-              child: Text("Admin"),
-            )));
+          padding: EdgeInsets.all(16.0),
+          child: Center(
+            child: Text("Admin"),
+          ),
+        ),
+    );
   }
 }
