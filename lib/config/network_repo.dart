@@ -17,6 +17,7 @@ class ApiProvider {
         },
         body: jsonEncode(body),
       );
+      print(baseUrl);
 
       // Log response details
       print('Response Status Code: ${response.statusCode}');
