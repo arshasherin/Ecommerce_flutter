@@ -25,30 +25,32 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: 
-      FutureBuilder<String?>(
-        future: check(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            final userType = snapshot.data;
-            printx("User type", userType);
-    
-            return saved != null
-                ? userType == 'admin'
-                    ? const AhomeScreen()
-                    : const UhomeScreen()
-                : AhomeScreen();
-          } else {
-            return AhomeScreen();
-          }
-        },
+    return MultiProvider(
+      providers: customProviders(context),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        home: FutureBuilder<String?>(
+          future: check(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              final userType = snapshot.data;
+              printx("User type", userType);
+
+              return saved != null
+                  ? userType == 'admin'
+                      ? const AhomeScreen()
+                      : const UhomeScreen()
+                  : LoginScreen();
+            } else {
+              return LoginScreen();
+            }
+          },
+        ),
       ),
     );
   }

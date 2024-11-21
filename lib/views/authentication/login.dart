@@ -1,10 +1,18 @@
+import 'package:ecommerce_flutter/config/localDB.dart';
+import 'package:ecommerce_flutter/constant/constant.dart';
+import 'package:ecommerce_flutter/views/admin/ahome/ahome.dart';
+import 'package:ecommerce_flutter/views/authentication/authVM.dart';
+import 'package:ecommerce_flutter/views/user/uhome.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatelessWidget {
+  static const String routeName = '/login-screen';
   const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final vm = Provider.of<AuthVM>(context, listen: false);
     return Scaffold(
       backgroundColor: Colors.blueGrey[50],
       body: Center(
@@ -22,7 +30,7 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              TextField(
+              TextFormField(
                 decoration: InputDecoration(
                   labelText: "Username",
                   border: OutlineInputBorder(
@@ -30,9 +38,11 @@ class LoginScreen extends StatelessWidget {
                   ),
                   prefixIcon: const Icon(Icons.person),
                 ),
+                onChanged: (value) =>
+                    vm.user = vm.user.copyWith(username: value),
               ),
               const SizedBox(height: 20),
-              TextField(
+              TextFormField(
                 decoration: InputDecoration(
                   labelText: "Password",
                   border: OutlineInputBorder(
@@ -41,11 +51,47 @@ class LoginScreen extends StatelessWidget {
                   prefixIcon: const Icon(Icons.lock),
                 ),
                 obscureText: true,
+                onChanged: (value) =>
+                    vm.user = vm.user.copyWith(password: value),
               ),
               const SizedBox(height: 30),
               ElevatedButton(
-                onPressed: () {
-                  // Handle login logic
+                onPressed: () async {
+                  vm.login((success) async {
+                    if (success) {
+                      final userType = LocalDatabaseService().fromDb(
+                        await LocalDatabaseService().openBox("type"),
+                        'key',
+                      );
+
+                      if (userType == 'user') {
+                        printx("data", userType);
+                        Navigator.pushReplacementNamed(
+                          context,
+                          UhomeScreen.routeName,
+                        );
+                      } else if (userType == 'admin') {
+                        printx("data", userType);
+                        Navigator.pushReplacementNamed(
+                          context,
+                          AhomeScreen.routeName,
+                        );
+                      }
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Login successful'),
+                          backgroundColor: Colors.green,
+                        ),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Login failed'),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    }
+                  });
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blueGrey,
