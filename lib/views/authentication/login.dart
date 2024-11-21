@@ -55,62 +55,16 @@ class LoginScreen extends StatelessWidget {
                     vm.user = vm.user.copyWith(password: value),
               ),
               const SizedBox(height: 30),
-              ElevatedButton(
-                onPressed: () async {
-                  vm.login((success) async {
-                    if (success) {
-                      final userType = LocalDatabaseService().fromDb(
-                        await LocalDatabaseService().openBox("type"),
-                        'key',
-                      );
+             ElevatedButton(
+              onPressed: () async {
+             
 
-                      if (userType == 'user') {
-                        printx("data", userType);
-                        Navigator.pushReplacementNamed(
-                          context,
-                          UhomeScreen.routeName,
-                        );
-                      } else if (userType == 'admin') {
-                        printx("data", userType);
-                        Navigator.pushReplacementNamed(
-                          context,
-                          AhomeScreen.routeName,
-                        );
-                      }
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Login successful'),
-                          backgroundColor: Colors.green,
-                        ),
-                      );
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Login failed'),
-                          backgroundColor: Colors.red,
-                        ),
-                      );
-                    }
-                  });
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blueGrey,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 40,
-                    vertical: 12,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                ),
-                child: const Text(
-                  "Login",
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
+                // Call the login function from AuthVM
+                await vm.login((success) {},context,);
+              },
+              child: const Text('Login'),
+            ),
+
             ],
           ),
         ),

@@ -6,14 +6,13 @@ import 'dart:convert';
 
 class ApiProvider {
   static const baseUrl = 'https://quickz.onrender.com';
- Future<Map<String, dynamic>> authentication(
+  Future<Map<String, dynamic>> authentication(
       String endpoint, Map<String, dynamic> body) async {
     try {
       final response = await http.post(
         Uri.parse('$baseUrl/$endpoint'),
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
-         
         },
         body: jsonEncode(body),
       );
@@ -34,6 +33,7 @@ class ApiProvider {
       throw Exception('API call failed: $error');
     }
   }
+
   Future<Map<String, dynamic>> post(
       String endpoint, Map<String, dynamic> body) async {
     try {

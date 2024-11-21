@@ -1,5 +1,6 @@
 import 'package:ecommerce_flutter/config/localDB.dart';
 import 'package:ecommerce_flutter/config/providers.dart';
+import 'package:ecommerce_flutter/config/routes.dart';
 import 'package:ecommerce_flutter/constant/constant.dart';
 import 'package:ecommerce_flutter/views/admin/ahome/ahome.dart';
 import 'package:ecommerce_flutter/views/authentication/login.dart';
@@ -34,6 +35,8 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
+        onGenerateRoute: (settings) => generateRoute(settings),
+        
         home: FutureBuilder<String?>(
           future: check(),
           builder: (context, snapshot) {
@@ -58,7 +61,7 @@ class MyApp extends StatelessWidget {
   Future<String?> check() async {
     try {
       // Open the box named "userType"
-      final userTypeBox = await LocalDatabaseService().openBox("role");
+      final userTypeBox = await LocalDatabaseService().openBox("type");
 
       // Retrieve the value associated with the key 'key'
       final userType = LocalDatabaseService().fromDb(userTypeBox, 'key');
@@ -66,7 +69,7 @@ class MyApp extends StatelessWidget {
       return userType;
     } catch (e) {
       printx('Error during userType check', e);
-      return null; // Handle error gracefully, return null or a default value
+      return null; // Handle error gracefully, return null o  r a default value
     }
   }
 }
