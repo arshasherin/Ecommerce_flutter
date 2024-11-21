@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class ApiProvider {
-  static const baseUrl = 'http://192.168.59.11:3000';
+  static const baseUrl = 'https://quickz.onrender.com';
 
   Future<Map<String, dynamic>> authentication(
       String endpoint, Map<String, dynamic> body) async {
