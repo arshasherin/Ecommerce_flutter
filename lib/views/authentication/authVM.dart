@@ -15,52 +15,50 @@ class AuthVM extends ChangeNotifier {
 
   UserModel user = const UserModel();
 
-  Future<void> login(void Function(bool success) callback, BuildContext context) async {
-  bool success = false;
-  try {
-    user = user.copyWith(username: user.username, password: user.password);
-    print("User attempting to log in: $user");
+  Future<void> login(
+      void Function(bool success) callback, BuildContext context) async {
+    bool success = false;
+    try {
+      user = user.copyWith(username: user.username, password: user.password);
+      print("User attempting to log in: $user");
 
-    final response = await apiProvider.authentication('login', user.toJson());
+      final response = await apiProvider.authentication('login', user.toJson());
 
-    if (response.containsKey('token') && response.containsKey('data')) {
-      final token = response['token'];
-      final userData = response['data'];
-      final userId = userData['id'];
-      final userType = userData['type'];
+      if (response.containsKey('token') && response.containsKey('data')) {
+        final token = response['token'];
+        final userData = response['data'];
+        final userId = userData['id'];
+        final userType = userData['type'];
 
-      // Save to local storage
-      db.toDb(await db.openBox('token'), "key", token);
-      db.toDb(await db.openBox('id'), "key", userId);
-      db.toDb(await db.openBox('type'), "key", userType);
+        // Save to local storage
+        db.toDb(await db.openBox('token'), "key", token);
+        db.toDb(await db.openBox('id'), "key", userId);
+        db.toDb(await db.openBox('type'), "key", userType);
 
-      success = true;
+        success = true;
 
-      // Navigate based on user type
-      if (userType == 'admin') {
-        Navigator.pushReplacementNamed(context, AhomeScreen.routeName);
+        // Navigate based on user type
+        if (userType == 'admin') {
+          Navigator.pushReplacementNamed(context, AhomeScreen.routeName);
+        } else {
+          Navigator.pushReplacementNamed(context, UhomeScreen.routeName);
+        }
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Login successful'),
+            backgroundColor: Colors.green,
+          ),
+        );
       } else {
-        Navigator.pushReplacementNamed(context, UhomeScreen.routeName);
+        _logger.e("Error: Missing 'token' or 'data' in response");
       }
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Login successful'),
-          backgroundColor: Colors.green,
-        ),
-      );
-    } else {
-      _logger.e("Error: Missing 'token' or 'data' in response");
+    } catch (error, stackTrace) {
+      _logger.e("Error: $error", error: error, stackTrace: stackTrace);
+    } finally {
+      callback(success);
     }
-
-  } catch (error, stackTrace) {
-    _logger.e("Error: $error", error: error, stackTrace: stackTrace);
-  } finally {
-    callback(success);
   }
-}
-
-
 
   Future<void> register(void Function(bool success) callback) async {
     bool success = false;
