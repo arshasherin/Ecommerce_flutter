@@ -35,6 +35,4 @@ void printx(String format, dynamic argument) {
   if (kDebugMode) {
     print('$format $argument');
   }
-
-
 }
