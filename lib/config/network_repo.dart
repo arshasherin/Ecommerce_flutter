@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class ApiProvider {
-  static const baseUrl = 'https://quickz.onrender.com';
+  static const baseUrl = 'http://localhost:2000';
   Future<Map<String, dynamic>> authentication(
       String endpoint, Map<String, dynamic> body) async {
     try {
@@ -35,46 +35,51 @@ class ApiProvider {
   }
 
   Future<Map<String, dynamic>> post(
-      String endpoint, Map<String, dynamic> body) async {
-    try {
-      final boxOpen = await db.openBox("token");
-      final token = db.fromDb(boxOpen, 'key');
-      final response = await http.post(
-        Uri.parse('$baseUrl/$endpoint'),
-        headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': token,
-        },
-        body: jsonEncode(body),
-      );
+    String endpoint, Map<String, dynamic> body) async {
+  try {
+    final boxOpen = await db.openBox("token");
+    final token = db.fromDb(boxOpen, 'key');
+    
+    // Make sure the token is prefixed with 'Bearer '
+    final authHeader = 'Bearer $token';
+    
+    final response = await http.post(
+      Uri.parse('$baseUrl/$endpoint'),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': authHeader,  // Use the 'Bearer' token format
+      },
+      body: jsonEncode(body),
+    );
 
-      printx('Response Status Code', response.statusCode);
-      printx('Response Body', response.body);
+    printx('Response Status Code', response.statusCode);
+    printx('Response Body', response.body);
 
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        // Successful response
-        return jsonDecode(response.body);
-      } else if (response.statusCode == 400) {
-        // Handle Bad Request (400)
-        throw Exception('Bad Request: ${response.body}');
-      } else if (response.statusCode == 401) {
-        // Handle Unauthorized y6ji6tf (401)
-        throw Exception('Unauthorized: ${response.body}');
-      } else if (response.statusCode == 404) {
-        // Handle Not Found (404)
-        throw Exception('Not Found: ${response.body}');
-      } else if (response.statusCode == 500) {
-        // Handle Internal Server Error (500)
-        throw Exception('Internal Server Error: ${response.body}');
-      } else {
-        // Handle other HTTP errors here.
-        throw Exception('Failed to make API call: ${response.statusCode}');
-      }
-    } catch (error) {
-      // Handle network or other errors
-      throw Exception('Failed to make API call: $error');
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      // Successful response
+      return jsonDecode(response.body);
+    } else if (response.statusCode == 400) {
+      // Handle Bad Request (400)
+      throw Exception('Bad Request: ${response.body}');
+    } else if (response.statusCode == 401) {
+      // Handle Unauthorized (401)
+      throw Exception('Unauthorized: ${response.body}');
+    } else if (response.statusCode == 404) {
+      // Handle Not Found (404)
+      throw Exception('Not Found: ${response.body}');
+    } else if (response.statusCode == 500) {
+      // Handle Internal Server Error (500)
+      throw Exception('Internal Server Error: ${response.body}');
+    } else {
+      // Handle other HTTP errors here.
+      throw Exception('Failed to make API call: ${response.statusCode}');
     }
+  } catch (error) {
+    // Handle network or other errors
+    throw Exception('Failed to make API call: $error');
   }
+}
+
 
   LocalDatabaseService db = LocalDatabaseService();
 

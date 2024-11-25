@@ -6,7 +6,7 @@ import 'package:logger/logger.dart';
 class AProductVM extends ChangeNotifier {
   final ApiProvider apiProvider = ApiProvider();
   final Logger _logger = Logger();
-
+  ProductModel product = const ProductModel();
   List<ProductModel> products = [];
   bool isLoaded = false;
   bool hasError = false;
@@ -15,6 +15,24 @@ class AProductVM extends ChangeNotifier {
   // Constructor is clean, no need to call fetchProducts here
   AProductVM() {
     fetchProducts();
+  }
+
+  Future<void> addProduct(void Function(bool success) callback) async {
+    bool success = false;
+    try {
+      product = product.copyWith(
+          name: product.name,
+          description: product.description,
+          price: product.price);
+      await apiProvider.post('admin/add', product.toJson());
+      success = true;
+      notifyListeners();
+    } catch (error, stackTrace) {
+      _logger.e("Error: $error", error: error, stackTrace: stackTrace);
+    } finally {
+      callback(success);
+      _logger.d("Response: $success");
+    }
   }
 
   // Fetch products

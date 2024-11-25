@@ -20,7 +20,6 @@ class AProductScreen extends StatelessWidget {
         builder: (context, productVM, child) {
           final products = productVM.products;
 
-          // Display products in a list view
           return ListView.builder(
             padding: const EdgeInsets.all(10.0),
             itemCount: products.length,
@@ -30,6 +29,105 @@ class AProductScreen extends StatelessWidget {
             },
           );
         },
+      ),
+      floatingActionButton: Builder(
+        builder: (context) => FloatingActionButton(
+          onPressed: () {
+            Scaffold.of(context).openEndDrawer();
+          },
+          backgroundColor: Colors.teal,
+          child: const Icon(Icons.add),
+        ),
+      ),
+      endDrawer: const AddProductDrawer(),
+    );
+  }
+}
+
+class AddProductDrawer extends StatelessWidget {
+  const AddProductDrawer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final vm = Provider.of<AProductVM>(context, listen: false);
+
+    return Drawer(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Add New Product',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.teal,
+              ),
+            ),
+            const SizedBox(height: 20),
+            TextFormField(
+              decoration: const InputDecoration(
+                labelText: 'Product Name',
+                border: OutlineInputBorder(),
+              ),
+              onChanged: (x) {
+                vm.product = vm.product.copyWith(name: x);
+              },
+            ),
+            const SizedBox(height: 10),
+            TextFormField(
+              decoration: const InputDecoration(
+                labelText: 'Description',
+                border: OutlineInputBorder(),
+              ),
+              onChanged: (x) {
+                vm.product = vm.product.copyWith(description: x);
+              },
+            ),
+            const SizedBox(height: 10),
+            TextFormField(
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                labelText: 'Price',
+                border: OutlineInputBorder(),
+              ),
+              onChanged: (x) {
+                vm.product = vm.product.copyWith(price: double.parse(x));
+              },
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () async {
+                // Call addProduct asynchronously
+                await vm.addProduct((success) {
+                  // Show SnackBar after the product is added successfully
+                  if (success) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("Product Added Successfully"),
+                        backgroundColor: Colors.green,
+                      ),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("Failed to Add Product"),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  }
+                });
+
+                // Pop the current screen after the product is added
+                Navigator.pop(context);
+                vm.fetchProducts();
+              },
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.teal),
+              child: const Text('Add Product'),
+            ),
+          ],
+        ),
       ),
     );
   }
