@@ -7,7 +7,6 @@ class AProductVM extends ChangeNotifier {
   final ApiProvider apiProvider = ApiProvider();
   final Logger _logger = Logger();
 
-
   List<ProductModel> products = [];
   bool isLoaded = false;
   bool hasError = false;
@@ -16,7 +15,6 @@ class AProductVM extends ChangeNotifier {
   // Constructor is clean, no need to call fetchProducts here
   AProductVM() {
     fetchProducts();
-
   }
 
   // Fetch products
@@ -36,12 +34,12 @@ class AProductVM extends ChangeNotifier {
 
       isLoaded = true;
     } catch (error, stackTrace) {
-      _logger.e('Error fetching products: $error', error: error, stackTrace: stackTrace);
+      _logger.e('Error fetching products: $error',
+          error: error, stackTrace: stackTrace);
       hasError = true;
       errorMessage = error.toString();
     } finally {
       notifyListeners();
     }
   }
-  
 }
