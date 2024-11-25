@@ -61,38 +61,37 @@ class AProductVM extends ChangeNotifier {
     }
   }
 
-Future<void> dtlProduct(int id) async {
-  try {
-    // Call the API to delete the product
-    await apiProvider.delete('admin/product/$id');
+  Future<void> dtlProduct(int id) async {
+    try {
+      await apiProvider.delete('admin/product/$id');
 
-    // Log success message
-    _logger.d("Product deleted successfully: ID $id");
+      // Log success message
+      _logger.d("Product deleted successfully: ID $id");
 
-    // Refresh the product list to reflect the change
-    await fetchProducts();
-  } catch (error, stackTrace) {
-    // Log error details for debugging
-    _logger.e("Error deleting product: $error", error: error, stackTrace: stackTrace);
-  }
-}
-
-Future<void> updateProduct(int id, ProductModel updatedProduct) async {
-  try {
-    final response =
-        await apiProvider.put('admin/product/$id', updatedProduct.toJson());
-    _logger.d("Product updated successfully: $response");
-
-    // Update the local list
-    final index = products.indexWhere((p) => p.id == id);
-    if (index != -1) {
-      products[index] = updatedProduct;
-      notifyListeners();
+      // Refresh the product list to reflect the change
+      await fetchProducts();
+    } catch (error, stackTrace) {
+      // Log error details for debugging
+      _logger.e("Error deleting product: $error",
+          error: error, stackTrace: stackTrace);
     }
-    
-  } catch (error, stackTrace) {
-    _logger.e("Error updating product: $error", error: error, stackTrace: stackTrace);
   }
-}
 
+  Future<void> updateProduct(int id, ProductModel updatedProduct) async {
+    try {
+      final response =
+          await apiProvider.put('admin/product/$id', updatedProduct.toJson());
+      _logger.d("Product updated successfully: $response");
+
+      // Update the local list
+      final index = products.indexWhere((p) => p.id == id);
+      if (index != -1) {
+        products[index] = updatedProduct;
+        notifyListeners();
+      }
+    } catch (error, stackTrace) {
+      _logger.e("Error updating product: $error",
+          error: error, stackTrace: stackTrace);
+    }
+  }
 }
