@@ -1,4 +1,8 @@
+import 'package:ecommerce_flutter/views/authentication/authVM.dart';
+import 'package:ecommerce_flutter/views/authentication/login.dart';
+import 'package:ecommerce_flutter/views/user/product/uproduct.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class UhomeScreen extends StatelessWidget {
     static const String routeName = '/u-home-screen';
@@ -6,6 +10,7 @@ class UhomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+      final authVM = Provider.of<AuthVM>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Home"),
@@ -18,10 +23,13 @@ class UhomeScreen extends StatelessWidget {
             },
           ),
           IconButton(
-            icon: const Icon(Icons.account_circle),
-            onPressed: () {
-              // Navigate to profile
-            },
+            icon: const Icon(Icons.logout),
+            onPressed: () async {
+                  // Call the logout function
+                  await authVM.logoutUser();
+                  // Navigate back to Login Screen after logout
+                  Navigator.pushReplacementNamed(context, LoginScreen.routeName);
+                },
           ),
         ],
       ),
@@ -34,9 +42,9 @@ class UhomeScreen extends StatelessWidget {
           children: [
             _buildFeatureCard(
               icon: Icons.shopping_cart,
-              label: "Shop",
+              label: "Products",
               onTap: () {
-                // Navigate to Shop
+                  Navigator.pushNamed(context, UProductScreen.routeName);
               },
             ),
             _buildFeatureCard(

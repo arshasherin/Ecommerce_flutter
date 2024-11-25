@@ -3,7 +3,7 @@ import 'package:ecommerce_flutter/config/network_repo.dart';
 import 'package:ecommerce_flutter/constant/constant.dart';
 import 'package:ecommerce_flutter/models/user_model.dart';
 import 'package:ecommerce_flutter/views/admin/ahome/ahome.dart';
-import 'package:ecommerce_flutter/views/user/uhome.dart';
+import 'package:ecommerce_flutter/views/user/home/uhome.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 

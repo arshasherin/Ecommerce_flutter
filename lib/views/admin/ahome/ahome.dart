@@ -1,3 +1,4 @@
+import 'package:ecommerce_flutter/views/admin/product/aproduct.dart';
 import 'package:ecommerce_flutter/views/authentication/authVM.dart';
 import 'package:ecommerce_flutter/views/authentication/login.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +51,7 @@ class AhomeScreen extends StatelessWidget {
                 leading: const Icon(Icons.settings),
                 title: const Text('Manage Products'),
                 onTap: () {
-                  // Navigate to Manage Products
+                 Navigator.pushNamed(context, AProductScreen.routeName);
                 },
               ),
               const Divider(), // Divider to separate logout option

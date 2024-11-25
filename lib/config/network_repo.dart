@@ -101,30 +101,44 @@ class ApiProvider {
     }
   }
 
-  Future<List<dynamic>> getList(String endpoint) async {
-    try {
-      final boxOpen = await db.openBox("token");
-      final token = db.fromDb(boxOpen, 'key');
-      final response = await http.get(
-        Uri.parse('$baseUrl/$endpoint'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': token,
-        },
-      );
+ Future<List<dynamic>> getList(String endpoint) async {
+  try {
+    final boxOpen = await db.openBox("token");
+    final token = db.fromDb(boxOpen, 'key');
 
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        return jsonDecode(response.body) as List<dynamic>;
-      } else if (response.statusCode == 401) {
-        // Return the custom dialog box widget when access is denied
-        return Future.error('Software license expired, access denied');
-      } else {
-        throw Exception('Failed to make GET API call: ${response.statusCode}');
-      }
-    } catch (error) {
-      throw Exception('Failed to make GET API call: $error');
+    // Check if token is null or empty
+    if (token == null || token.isEmpty) {
+      throw Exception("No token found. Please log in again.");
     }
+
+    // Log token and headers for debugging
+   print('Token: $token');
+
+    final response = await http.get(
+      Uri.parse('$baseUrl/$endpoint'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    // Log the full response for debugging
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
+
+    // Check if the response is successful
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return jsonDecode(response.body) as List<dynamic>;
+    } else {
+      throw Exception(
+          'Failed to fetch data. Status code: ${response.statusCode}');
+    }
+  } catch (error) {
+   print('Error making GET API call: $error');
+    throw Exception('Failed to make GET API call: $error');
   }
+}
+
 
   Future<Map<String, dynamic>> put(
       String endpoint, Map<String, dynamic> body) async {
