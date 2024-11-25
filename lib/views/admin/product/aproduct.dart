@@ -25,7 +25,11 @@ class AProductScreen extends StatelessWidget {
             itemCount: products.length,
             itemBuilder: (context, index) {
               final product = products[index];
-              return ProductCard(product: product);
+              return ProductCard(
+                product: product,
+                onDelete: () => _confirmDelete(context, productVM, product),
+                onUpdate: () => _showUpdatePopup(context, productVM, product),
+              );
             },
           );
         },
@@ -42,6 +46,103 @@ class AProductScreen extends StatelessWidget {
       endDrawer: const AddProductDrawer(),
     );
   }
+
+  void _confirmDelete(
+      BuildContext context, AProductVM productVM, ProductModel product) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Confirm Delete'),
+        content: Text('Are you sure you want to delete ${product.name}?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              productVM.dtlProduct(product.id!.toInt());
+            
+              Navigator.of(context).pop();
+            },
+            child: const Text('Delete', style: TextStyle(color: Colors.red)),
+          ),
+        ],
+      ),
+    );
+  }
+void _showUpdatePopup(
+    BuildContext context, AProductVM vm, ProductModel product) {
+  // Local variables to temporarily store updated values
+  String updatedName = product.name ?? '';
+  String updatedDescription = product.description ?? '';
+  double updatedPrice = product.price ?? 0.0;
+
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: const Text('Update Product'),
+      content: SingleChildScrollView(
+        child: Column(
+          children: [
+            TextFormField(
+              initialValue: updatedName,
+              decoration: const InputDecoration(
+                labelText: 'Product Name',
+                border: OutlineInputBorder(),
+              ),
+              onChanged: (value) {
+                updatedName = value;
+              },
+            ),
+            const SizedBox(height: 10),
+            TextFormField(
+              initialValue: updatedDescription,
+              decoration: const InputDecoration(
+                labelText: 'Description',
+                border: OutlineInputBorder(),
+              ),
+              onChanged: (value) {
+                updatedDescription = value;
+              },
+            ),
+            const SizedBox(height: 10),
+            TextFormField(
+              initialValue: updatedPrice.toString(),
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                labelText: 'Price',
+                border: OutlineInputBorder(),
+              ),
+              onChanged: (value) {
+                updatedPrice = double.tryParse(value) ?? 0.0;
+              },
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Text('Cancel'),
+        ),
+        TextButton(
+          onPressed: () async {
+            final updatedProduct = product.copyWith(
+              name: updatedName,
+              description: updatedDescription,
+              price: updatedPrice,
+            );
+            await vm.updateProduct(product.id!.toInt(), updatedProduct);
+            Navigator.of(context).pop();
+          },
+          child: const Text('Update', style: TextStyle(color: Colors.blue)),
+        ),
+      ],
+    ),
+  );
+}
+
 }
 
 class AddProductDrawer extends StatelessWidget {
@@ -135,8 +236,15 @@ class AddProductDrawer extends StatelessWidget {
 
 class ProductCard extends StatelessWidget {
   final ProductModel product;
+  final VoidCallback onDelete;
+  final VoidCallback onUpdate;
 
-  const ProductCard({required this.product, super.key});
+  const ProductCard({
+    required this.product,
+    required this.onDelete,
+    required this.onUpdate,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -148,41 +256,54 @@ class ProductCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(7.0),
         child: Column(
-          mainAxisSize:
-              MainAxisSize.min, // Set to min to shrink-wrap the column
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Product Image (Placeholder for now)
-            Container(
-              height: 100,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(4.5),
-                color: Colors.grey[300],
-              ),
-              child: const Icon(Icons.image, size: 50, color: Colors.grey),
+            Stack(
+              children: [
+                Container(
+                  height: 100,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4.5),
+                    color: Colors.grey[300],
+                  ),
+                  child: const Icon(Icons.image, size: 50, color: Colors.grey),
+                ),
+                Positioned(
+                  top: 5,
+                  right: 5,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.edit, color: Colors.blue),
+                        onPressed: onUpdate,
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.delete, color: Colors.red),
+                        onPressed: onDelete,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 10),
-            // Product Name
             Text(
               product.name ?? 'Unknown Product',
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
             const SizedBox(height: 5),
-            // Product Description
             Text(
               product.description ?? 'No description available',
               style: const TextStyle(color: Colors.grey),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
-            const SizedBox(height: 10), // Adjusted spacing
-            // Product Price
+            const SizedBox(height: 10),
             Text(
               '\$${product.price?.toStringAsFixed(2) ?? '0.00'}',
               style: const TextStyle(
@@ -190,25 +311,6 @@ class ProductCard extends StatelessWidget {
                 fontSize: 16,
                 color: Colors.teal,
               ),
-            ),
-            const SizedBox(height: 5),
-            // Add to Cart Button
-            ElevatedButton(
-              onPressed: () {
-                // TODO: Implement add-to-cart functionality
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('${product.name} added to cart!'),
-                  ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.teal,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              child: const Text('Add to Cart'),
             ),
           ],
         ),
