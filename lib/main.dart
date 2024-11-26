@@ -7,8 +7,8 @@ import 'package:ecommerce_flutter/views/authentication/login.dart';
 import 'package:ecommerce_flutter/views/user/home/uhome.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import 'package:hive_flutter/adapters.dart';
+import 'package:shimmer/shimmer.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -52,28 +52,51 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<String?>(
-      future: _checkUserType(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: CircularProgressIndicator(), // Show loading indicator
-          );
-        }
-
-        if (snapshot.hasData && saved != null) {
-          final userType = snapshot.data;
-          printx('User type', userType);
-
-          if (userType == 'admin') {
-            return const AhomeScreen();
-          } else {
-            return const UhomeScreen();
+    return Scaffold(
+      body: FutureBuilder<String?>(
+        future: _checkUserType(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: Shimmer.fromColors(
+                baseColor: Colors.grey.shade300,
+                highlightColor: Colors.grey.shade100,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const CircularProgressIndicator(
+                      strokeWidth: 6.0,
+                      valueColor: AlwaysStoppedAnimation(Colors.grey),
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      "Loading...",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.grey.shade600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
           }
-        } else {
-          return const LoginScreen();
-        }
-      },
+      
+          if (snapshot.hasData && saved != null) {
+            final userType = snapshot.data;
+            printx('User type', userType);
+      
+            if (userType == 'admin') {
+              return const AhomeScreen();
+            } else {
+              return const UhomeScreen();
+            }
+          } else {
+            return const LoginScreen();
+          }
+        },
+      ),
     );
   }
 

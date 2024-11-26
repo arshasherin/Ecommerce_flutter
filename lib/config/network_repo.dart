@@ -194,4 +194,36 @@ class ApiProvider {
       throw Exception('Failed to make DELETE API call: $error');
     }
   }
+
+    Future<Map<String, dynamic>> getJson(String endpoint) async {
+    try {
+      final boxOpen = await db.openBox("token");
+      final token = db.fromDb(boxOpen, 'key');
+
+      if (token == null || token.isEmpty) {
+        throw Exception("No token found. Please log in again.");
+      }
+
+      final response = await http.get(
+        Uri.parse('$baseUrl/$endpoint'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final decodedResponse = jsonDecode(response.body);
+        if (decodedResponse is Map<String, dynamic>) {
+          return decodedResponse;
+        } else {
+          throw Exception('Invalid response format: Expected JSON object.');
+        }
+      } else {
+        throw Exception('Failed to fetch data. Status code: ${response.statusCode}');
+      }
+    } catch (error) {
+      throw Exception('Failed to make GET API call: $error');
+    }
+  }
 }

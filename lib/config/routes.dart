@@ -1,5 +1,6 @@
 import 'package:ecommerce_flutter/views/admin/ahome/ahome.dart';
 import 'package:ecommerce_flutter/views/admin/product/aproduct.dart';
+import 'package:ecommerce_flutter/views/admin/userManag/auser.dart';
 import 'package:ecommerce_flutter/views/authentication/login.dart';
 import 'package:ecommerce_flutter/views/user/home/uhome.dart';
 import 'package:ecommerce_flutter/views/user/product/uproduct.dart';
@@ -22,17 +23,21 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
         settings: routeSettings,
         builder: (_) => const AhomeScreen(),
       );
-      case UProductScreen.routeName:
+    case UProductScreen.routeName:
       return MaterialPageRoute(
         settings: routeSettings,
         builder: (_) => const UProductScreen(),
       );
-       case AProductScreen.routeName:
+    case AProductScreen.routeName:
       return MaterialPageRoute(
         settings: routeSettings,
         builder: (_) => const AProductScreen(),
       );
-
+    case UserList.routeName:
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (_) => const UserList(),
+      );
 
     default:
       return MaterialPageRoute(

@@ -1,4 +1,5 @@
 import 'package:ecommerce_flutter/views/admin/product/aproduct.dart';
+import 'package:ecommerce_flutter/views/admin/userManag/auser.dart';
 import 'package:ecommerce_flutter/views/authentication/authVM.dart';
 import 'package:ecommerce_flutter/views/authentication/login.dart';
 import 'package:flutter/material.dart';
@@ -44,7 +45,7 @@ class AhomeScreen extends StatelessWidget {
                 leading: const Icon(Icons.people),
                 title: const Text('Manage Users'),
                 onTap: () {
-                  // Navigate to Manage Users
+                  Navigator.pushNamed(context, UserList.routeName);
                 },
               ),
               ListTile(

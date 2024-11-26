@@ -9,11 +9,13 @@ import 'package:logger/logger.dart';
 
 class AuthVM extends ChangeNotifier {
   final ApiProvider apiProvider = ApiProvider();
-
   LocalDatabaseService db = LocalDatabaseService();
   final Logger _logger = Logger();
-
   UserModel user = const UserModel();
+
+  bool isLoaded = false;
+  bool hasError = false;
+  String errorMessage = '';
 
   Future<void> login(
       void Function(bool success) callback, BuildContext context) async {
