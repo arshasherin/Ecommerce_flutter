@@ -1,3 +1,4 @@
+// ignore: file_names
 import 'package:ecommerce_flutter/config/network_repo.dart';
 import 'package:ecommerce_flutter/models/product_model.dart';
 import 'package:flutter/material.dart';

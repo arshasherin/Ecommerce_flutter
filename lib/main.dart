@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:hive_flutter/adapters.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
@@ -47,7 +48,7 @@ class MyApp extends StatelessWidget {
 class SplashScreen extends StatelessWidget {
   final dynamic saved;
 
-  const SplashScreen({Key? key, this.saved}) : super(key: key);
+  const SplashScreen({super.key, this.saved});
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +63,7 @@ class SplashScreen extends StatelessWidget {
 
         if (snapshot.hasData && saved != null) {
           final userType = snapshot.data;
-          print('User type: $userType');
+          printx('User type', userType);
 
           if (userType == 'admin') {
             return const AhomeScreen();
@@ -80,10 +81,10 @@ class SplashScreen extends StatelessWidget {
     try {
       final userTypeBox = await LocalDatabaseService().openBox("type");
       final userType = LocalDatabaseService().fromDb(userTypeBox, 'key');
-      print('User Type: $userType');
+      printx('User Type ', userType);
       return userType;
     } catch (e) {
-      print('Error during userType check: $e');
+      printx('Error during userType check', e);
       return null;
     }
   }

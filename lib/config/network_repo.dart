@@ -1,11 +1,12 @@
 import 'package:ecommerce_flutter/constant/constant.dart';
 import 'package:ecommerce_flutter/config/localDB.dart';
 import 'package:http/http.dart' as http;
-
 import 'dart:convert';
 
 class ApiProvider {
   static const baseUrl = 'https://quickz.onrender.com';
+  LocalDatabaseService db = LocalDatabaseService();
+
   Future<Map<String, dynamic>> authentication(
       String endpoint, Map<String, dynamic> body) async {
     try {
@@ -16,11 +17,11 @@ class ApiProvider {
         },
         body: jsonEncode(body),
       );
-      print(baseUrl);
+      printx("Base URL", baseUrl);
 
       // Log response details
-      print('Response Status Code: ${response.statusCode}');
-      print('Response Body: ${response.body}');
+      printx('Response Status Code', response.statusCode);
+      printx('Response Body', response.body);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         return jsonDecode(response.body);
@@ -29,7 +30,7 @@ class ApiProvider {
             'HTTP Error: ${response.statusCode}, Body: ${response.body}');
       }
     } catch (error) {
-      print('Error during API call: $error');
+      printx('Error during API call', error);
       throw Exception('API call failed: $error');
     }
   }
@@ -80,8 +81,6 @@ class ApiProvider {
     }
   }
 
-  LocalDatabaseService db = LocalDatabaseService();
-
   Future<Map<String, dynamic>> get(String endpoint) async {
     try {
       final boxOpen = await db.openBox("token");
@@ -116,7 +115,7 @@ class ApiProvider {
       }
 
       // Log token and headers for debugging
-      print('Token: $token');
+      printx('Token', token);
 
       final response = await http.get(
         Uri.parse('$baseUrl/$endpoint'),
@@ -127,8 +126,8 @@ class ApiProvider {
       );
 
       // Log the full response for debugging
-      print('Response status: ${response.statusCode}');
-      print('Response body: ${response.body}');
+      printx('Response Status Code', response.statusCode);
+      printx('Response Body', response.body);
 
       // Check if the response is successful
       if (response.statusCode == 200 || response.statusCode == 201) {
@@ -138,7 +137,7 @@ class ApiProvider {
             'Failed to fetch data. Status code: ${response.statusCode}');
       }
     } catch (error) {
-      print('Error making GET API call: $error');
+      printx('Error making GET API call', error);
       throw Exception('Failed to make GET API call: $error');
     }
   }

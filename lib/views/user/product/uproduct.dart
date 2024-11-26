@@ -120,7 +120,6 @@ class ProductCard extends StatelessWidget {
             // Add to Cart Button
             ElevatedButton(
               onPressed: () {
-                // TODO: Implement add-to-cart functionality
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text('${product.name} added to cart!'),

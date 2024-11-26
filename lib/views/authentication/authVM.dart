@@ -20,23 +20,18 @@ class AuthVM extends ChangeNotifier {
     bool success = false;
     try {
       user = user.copyWith(username: user.username, password: user.password);
-      print("User attempting to log in: $user");
-
+      printx("User attempting to log in", user);
       final response = await apiProvider.authentication('login', user.toJson());
-
       if (response.containsKey('token') && response.containsKey('data')) {
         final token = response['token'];
         final userData = response['data'];
         final userId = userData['id'];
         final userType = userData['type'];
-
         // Save to local storage
         db.toDb(await db.openBox('token'), "key", token);
         db.toDb(await db.openBox('id'), "key", userId);
         db.toDb(await db.openBox('type'), "key", userType);
-
         success = true;
-
         // Navigate based on user type
         if (userType == 'admin') {
           Navigator.pushReplacementNamed(context, AhomeScreen.routeName);
@@ -63,7 +58,8 @@ class AuthVM extends ChangeNotifier {
   Future<void> register(void Function(bool success) callback) async {
     bool success = false;
     try {
-      user = user.copyWith(username: user.username, password: user.password);
+      user = user.copyWith(
+          username: user.username, password: user.password, type: "user");
       await apiProvider.authentication('register', user.toJson());
       success = true;
       notifyListeners();

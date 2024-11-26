@@ -62,7 +62,7 @@ class AProductScreen extends StatelessWidget {
           TextButton(
             onPressed: () {
               productVM.dtlProduct(product.id!.toInt());
-            
+
               Navigator.of(context).pop();
             },
             child: const Text('Delete', style: TextStyle(color: Colors.red)),
@@ -71,78 +71,78 @@ class AProductScreen extends StatelessWidget {
       ),
     );
   }
-void _showUpdatePopup(
-    BuildContext context, AProductVM vm, ProductModel product) {
-  // Local variables to temporarily store updated values
-  String updatedName = product.name ?? '';
-  String updatedDescription = product.description ?? '';
-  double updatedPrice = product.price ?? 0.0;
 
-  showDialog(
-    context: context,
-    builder: (context) => AlertDialog(
-      title: const Text('Update Product'),
-      content: SingleChildScrollView(
-        child: Column(
-          children: [
-            TextFormField(
-              initialValue: updatedName,
-              decoration: const InputDecoration(
-                labelText: 'Product Name',
-                border: OutlineInputBorder(),
+  void _showUpdatePopup(
+      BuildContext context, AProductVM vm, ProductModel product) {
+    // Local variables to temporarily store updated values
+    String updatedName = product.name ?? '';
+    String updatedDescription = product.description ?? '';
+    double updatedPrice = product.price ?? 0.0;
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Update Product'),
+        content: SingleChildScrollView(
+          child: Column(
+            children: [
+              TextFormField(
+                initialValue: updatedName,
+                decoration: const InputDecoration(
+                  labelText: 'Product Name',
+                  border: OutlineInputBorder(),
+                ),
+                onChanged: (value) {
+                  updatedName = value;
+                },
               ),
-              onChanged: (value) {
-                updatedName = value;
-              },
-            ),
-            const SizedBox(height: 10),
-            TextFormField(
-              initialValue: updatedDescription,
-              decoration: const InputDecoration(
-                labelText: 'Description',
-                border: OutlineInputBorder(),
+              const SizedBox(height: 10),
+              TextFormField(
+                initialValue: updatedDescription,
+                decoration: const InputDecoration(
+                  labelText: 'Description',
+                  border: OutlineInputBorder(),
+                ),
+                onChanged: (value) {
+                  updatedDescription = value;
+                },
               ),
-              onChanged: (value) {
-                updatedDescription = value;
-              },
-            ),
-            const SizedBox(height: 10),
-            TextFormField(
-              initialValue: updatedPrice.toString(),
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                labelText: 'Price',
-                border: OutlineInputBorder(),
+              const SizedBox(height: 10),
+              TextFormField(
+                initialValue: updatedPrice.toString(),
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                  labelText: 'Price',
+                  border: OutlineInputBorder(),
+                ),
+                onChanged: (value) {
+                  updatedPrice = double.tryParse(value) ?? 0.0;
+                },
               ),
-              onChanged: (value) {
-                updatedPrice = double.tryParse(value) ?? 0.0;
-              },
-            ),
-          ],
+            ],
+          ),
         ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () async {
+              final updatedProduct = product.copyWith(
+                name: updatedName,
+                description: updatedDescription,
+                price: updatedPrice,
+              );
+              await vm.updateProduct(product.id!.toInt(), updatedProduct);
+              Navigator.of(context).pop();
+            },
+            child: const Text('Update', style: TextStyle(color: Colors.blue)),
+          ),
+        ],
       ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Cancel'),
-        ),
-        TextButton(
-          onPressed: () async {
-            final updatedProduct = product.copyWith(
-              name: updatedName,
-              description: updatedDescription,
-              price: updatedPrice,
-            );
-            await vm.updateProduct(product.id!.toInt(), updatedProduct);
-            Navigator.of(context).pop();
-          },
-          child: const Text('Update', style: TextStyle(color: Colors.blue)),
-        ),
-      ],
-    ),
-  );
-}
-
+    );
+  }
 }
 
 class AddProductDrawer extends StatelessWidget {
