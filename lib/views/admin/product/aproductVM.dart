@@ -1,4 +1,6 @@
 // ignore: file_names
+import 'dart:convert';
+
 import 'package:ecommerce_flutter/config/network_repo.dart';
 import 'package:ecommerce_flutter/constant/constant.dart';
 import 'package:ecommerce_flutter/models/category_model.dart';
@@ -37,6 +39,58 @@ class AProductVM extends ChangeNotifier {
     fetchProducts();
     fetchCategories();
   }
+  List<Map<String, dynamic>> _messages = []; // List of messages
+  bool _isChatBoxVisible = false; // Initial state of the chat box
+
+  // Getter to check visibility
+  bool get isChatBoxVisible => _isChatBoxVisible;
+
+  // Method to toggle the visibility
+  void toggleChatBoxVisibility() {
+    _isChatBoxVisible = !_isChatBoxVisible;
+    notifyListeners(); // Notify listeners to rebuild the widget
+  }
+
+  // Function to send the message to the AI chatbot and get the response
+  Future<void> aaiChatbot(String message) async {
+    bool success = false;
+    try {
+      // Send the message to the API
+      final response =
+          await apiProvider.post('admin/ai-chatbot', {"message": message});
+
+      // Assuming response is a decoded JSON map, check the success status
+      if (response != null && response is Map<String, dynamic>) {
+        // Check if the response is successful and extract the response text
+        if (response['success'] == true) {
+          String aiResponse =
+              response['response']; // Get the response from the AI
+
+          // Add the user's message and AI's response to the message list
+          _messages.add({'sender': 'user', 'text': message});
+          _messages.add({'sender': 'ai', 'text': aiResponse});
+          success = true;
+        } else {
+          _messages.add({
+            'sender': 'ai',
+            'text': "Error: Unable to get a valid response."
+          });
+        }
+      } else {
+        _messages
+            .add({'sender': 'ai', 'text': "Error: Invalid response format."});
+      }
+
+      notifyListeners(); // Notify listeners of the update
+    } catch (error, stackTrace) {
+      _logger.e("Error: $error", error: error, stackTrace: stackTrace);
+      _messages.add({'sender': 'ai', 'text': "Error: Something went wrong."});
+      notifyListeners();
+    }
+  }
+
+  // Getter to retrieve the messages
+  List<Map<String, dynamic>> get messages => _messages;
 
   Future<void> addProduct(void Function(bool success) callback) async {
     bool success = false;

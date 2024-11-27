@@ -21,7 +21,7 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
     case AhomeScreen.routeName:
       return MaterialPageRoute(
         settings: routeSettings,
-        builder: (_) => const AhomeScreen(),
+        builder: (_) =>  AhomeScreen(),
       );
     case UProductScreen.routeName:
       return MaterialPageRoute(

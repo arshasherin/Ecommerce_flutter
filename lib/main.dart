@@ -88,7 +88,7 @@ class SplashScreen extends StatelessWidget {
             printx('User type', userType);
 
             if (userType == 'admin') {
-              return const AhomeScreen();
+              return  AhomeScreen();
             } else {
               return const UhomeScreen();
             }
