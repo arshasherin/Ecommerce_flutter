@@ -1,3 +1,4 @@
+import 'package:ecommerce_flutter/models/category_model.dart';
 import 'package:ecommerce_flutter/views/admin/product/aproductVM.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -107,23 +108,25 @@ class AddProductDrawer extends StatelessWidget {
             10.height,
             Consumer<AProductVM>(
               builder: (context, vm, child) {
-                return DropdownButtonFormField<String>(
+                return DropdownButtonFormField<CategoryModel>(
                   decoration: const InputDecoration(
                     labelText: 'Category',
                     border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                    ),
                   ),
-                  value: vm.selectedCategory,
+                  value: vm.selectedCategory, // Expecting CategoryModel
                   items: vm.categories
-                      .map((category) => DropdownMenuItem<String>(
-                            value: category.name,
-                            child: Text(category.name.toString()),
+                      .map((category) => DropdownMenuItem<CategoryModel>(
+                            value: category, // Pass the CategoryModel object
+                            child: Text(category.name
+                                .toString()), // Display the category name
                           ))
                       .toList(),
                   onChanged: (value) {
                     if (value != null) {
                       vm.selectCategory(
-                          value); // Update selectedCategory in AProductVM
+                          value); // Pass the selected CategoryModel
                     }
                   },
                 );
