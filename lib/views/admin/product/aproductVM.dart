@@ -1,5 +1,6 @@
 // ignore: file_names
 import 'package:ecommerce_flutter/config/network_repo.dart';
+import 'package:ecommerce_flutter/constant/constant.dart';
 import 'package:ecommerce_flutter/models/category_model.dart';
 import 'package:ecommerce_flutter/models/product_model.dart';
 import 'package:flutter/material.dart';
@@ -15,11 +16,11 @@ class AProductVM extends ChangeNotifier {
   bool hasError = false;
   String errorMessage = '';
 
-  String? _selectedCategory;
+  CategoryModel? _selectedCategory;
 
-  String? get selectedCategory => _selectedCategory;
+  CategoryModel? get selectedCategory => _selectedCategory;
 
-  void selectCategory(String category) {
+  void selectCategory(CategoryModel category) {
     _selectedCategory = category;
     notifyListeners();
   }
@@ -33,10 +34,22 @@ class AProductVM extends ChangeNotifier {
   Future<void> addProduct(void Function(bool success) callback) async {
     bool success = false;
     try {
+      // Ensure a category is selected before proceeding
+      if (_selectedCategory == null) {
+        throw Exception('No category selected');
+      }
+
       product = product.copyWith(
-          name: product.name,
-          description: product.description,
-          price: product.price);
+        name: product.name,
+        description: product.description,
+        price: product.price,
+        categoryId: _selectedCategory!.id, // Add the selected category ID
+      );
+
+      printx(
+          ".....................././././././././././././././. prodycts with categotu ixd ",
+          product);
+
       await apiProvider.post('admin/add', product.toJson());
       success = true;
       notifyListeners();
