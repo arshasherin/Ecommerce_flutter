@@ -15,7 +15,7 @@ class AProductVM extends ChangeNotifier {
   bool isLoaded = false;
   bool hasError = false;
   String errorMessage = '';
-
+  CategoryModel category = CategoryModel();
   CategoryModel? _selectedCategory;
 
   CategoryModel? get selectedCategory => _selectedCategory;
@@ -46,9 +46,7 @@ class AProductVM extends ChangeNotifier {
         categoryId: _selectedCategory!.id, // Add the selected category ID
       );
 
-      printx(
-          ".....................././././././././././././././. prodycts with categotu ixd ",
-          product);
+      printx(".....................././././././././././././././. prodycts with categotu ixd ", product);
 
       await apiProvider.post('admin/add', product.toJson());
       success = true;
@@ -59,6 +57,15 @@ class AProductVM extends ChangeNotifier {
       callback(success);
       _logger.d("Response: $success");
     }
+  }
+
+  Future<void> addCategory(String? Category, int? id) async {
+    category = category.copyWith(id: id, name: Category);
+    await apiProvider.post('admin/category', category.toJson());
+    print("ppppppppppp" + category.toString());
+    category = CategoryModel();
+    fetchCategories();
+    notifyListeners();
   }
 
   // Fetch products
@@ -72,14 +79,11 @@ class AProductVM extends ChangeNotifier {
       final response = await apiProvider.getList('admin/products');
 
       _logger.d('Fetched Products Response user: $response');
-      products = response
-          .map<ProductModel>((data) => ProductModel.fromJson(data))
-          .toList();
+      products = response.map<ProductModel>((data) => ProductModel.fromJson(data)).toList();
 
       isLoaded = true;
     } catch (error, stackTrace) {
-      _logger.e('Error fetching products: $error',
-          error: error, stackTrace: stackTrace);
+      _logger.e('Error fetching products: $error', error: error, stackTrace: stackTrace);
       hasError = true;
       errorMessage = error.toString();
     } finally {
@@ -98,15 +102,13 @@ class AProductVM extends ChangeNotifier {
       await fetchProducts();
     } catch (error, stackTrace) {
       // Log error details for debugging
-      _logger.e("Error deleting product: $error",
-          error: error, stackTrace: stackTrace);
+      _logger.e("Error deleting product: $error", error: error, stackTrace: stackTrace);
     }
   }
 
   Future<void> updateProduct(int id, ProductModel updatedProduct) async {
     try {
-      final response =
-          await apiProvider.put('admin/product/$id', updatedProduct.toJson());
+      final response = await apiProvider.put('admin/product/$id', updatedProduct.toJson());
       _logger.d("Product updated successfully: $response");
 
       // Update the local list
@@ -116,8 +118,7 @@ class AProductVM extends ChangeNotifier {
         notifyListeners();
       }
     } catch (error, stackTrace) {
-      _logger.e("Error updating product: $error",
-          error: error, stackTrace: stackTrace);
+      _logger.e("Error updating product: $error", error: error, stackTrace: stackTrace);
     }
   }
 
@@ -132,14 +133,11 @@ class AProductVM extends ChangeNotifier {
       final response = await apiProvider.getList('admin/categories');
 
       _logger.d('Fetched categories Response user: $response');
-      categories = response
-          .map<CategoryModel>((data) => CategoryModel.fromJson(data))
-          .toList();
+      categories = response.map<CategoryModel>((data) => CategoryModel.fromJson(data)).toList();
 
       isLoaded = true;
     } catch (error, stackTrace) {
-      _logger.e('Error fetching products: $error',
-          error: error, stackTrace: stackTrace);
+      _logger.e('Error fetching products: $error', error: error, stackTrace: stackTrace);
       hasError = true;
       errorMessage = error.toString();
     } finally {

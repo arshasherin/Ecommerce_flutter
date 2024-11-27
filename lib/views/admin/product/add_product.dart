@@ -93,37 +93,34 @@ class AddProductDrawer extends StatelessWidget {
                         items: vm.categories
                             .map((category) => DropdownMenuItem<CategoryModel>(
                                   value: category, // Pass the CategoryModel object
-                                  child: Text(category.name
-                                      .toString()), // Display the category name
+                                  child: Text(category.name.toString()), // Display the category name
                                 ))
                             .toList(),
                         onChanged: (value) {
                           if (value != null) {
-                            vm.selectCategory(
-                                value); // Pass the selected CategoryModel
+                            vm.selectCategory(value); // Pass the selected CategoryModel
                           }
                         },
                       ),
                     ),
-                     10.width,
+                    10.width,
                     CustomButton(
                       height: 40,
                       // width: ,
                       color: CustomColors.primaryColors,
-                      icon:Icons.add ,
+                      icon: Icons.add,
                       iconSize: 16,
                       iconColor: CustomColors.appBarTextColor,
-                       onTap: () {
+                      onTap: () {
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
-                            String newCategoryName = '';
                             return AlertDialog(
                               title: const Text("Add Category"),
                               content: TextField(
                                 decoration: const InputDecoration(hintText: "Enter category name"),
                                 onChanged: (value) {
-                                  newCategoryName = value;
+                                  vm.category = vm.category.copyWith(name: value);
                                 },
                               ),
                               actions: [
@@ -135,7 +132,8 @@ class AddProductDrawer extends StatelessWidget {
                                 ),
                                 TextButton(
                                   onPressed: () {
-                                    if (newCategoryName.isNotEmpty) {
+                                    if (vm.category.name!.isNotEmpty) {
+                                      vm.addCategory(vm.category.name.toString(),vm.category.id);
                                       Navigator.pop(context);
                                     } else {
                                       ScaffoldMessenger.of(context).showSnackBar(
@@ -153,7 +151,6 @@ class AddProductDrawer extends StatelessWidget {
                           },
                         );
                       },
-                      
                     ),
                   ],
                 );
