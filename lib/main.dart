@@ -93,7 +93,7 @@ class SplashScreen extends StatelessWidget {
               return const UhomeScreen();
             }
           } else {
-            return const LoginScreen();
+            return const AhomeScreen();
           }
         },
       ),

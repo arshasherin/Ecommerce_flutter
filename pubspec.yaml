@@ -49,6 +49,7 @@ dependencies:
   fluttertoast: ^8.2.8
   shimmer: ^3.0.0
   nb_utils: ^7.0.7
+  fl_chart: ^0.69.2
 
 dev_dependencies:
   flutter_test:
