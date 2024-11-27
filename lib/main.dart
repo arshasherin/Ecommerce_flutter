@@ -82,11 +82,11 @@ class SplashScreen extends StatelessWidget {
               ),
             );
           }
-      
+
           if (snapshot.hasData && saved != null) {
             final userType = snapshot.data;
             printx('User type', userType);
-      
+
             if (userType == 'admin') {
               return const AhomeScreen();
             } else {

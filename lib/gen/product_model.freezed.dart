@@ -30,6 +30,11 @@ mixin _$ProductModel {
   double? get price => throw _privateConstructorUsedError;
   @JsonKey(name: 'created_by')
   int? get createdBy => throw _privateConstructorUsedError;
+  @JsonKey(name: 'category_id')
+  int? get categoryId =>
+      throw _privateConstructorUsedError; // Add category_id field
+  @JsonKey(name: 'category')
+  String? get category => throw _privateConstructorUsedError;
 
   /// Serializes this ProductModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -52,7 +57,9 @@ abstract class $ProductModelCopyWith<$Res> {
       @JsonKey(name: 'name') String? name,
       @JsonKey(name: 'description') String? description,
       @JsonKey(name: 'price') double? price,
-      @JsonKey(name: 'created_by') int? createdBy});
+      @JsonKey(name: 'created_by') int? createdBy,
+      @JsonKey(name: 'category_id') int? categoryId,
+      @JsonKey(name: 'category') String? category});
 }
 
 /// @nodoc
@@ -75,6 +82,8 @@ class _$ProductModelCopyWithImpl<$Res, $Val extends ProductModel>
     Object? description = freezed,
     Object? price = freezed,
     Object? createdBy = freezed,
+    Object? categoryId = freezed,
+    Object? category = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -97,6 +106,14 @@ class _$ProductModelCopyWithImpl<$Res, $Val extends ProductModel>
           ? _value.createdBy
           : createdBy // ignore: cast_nullable_to_non_nullable
               as int?,
+      categoryId: freezed == categoryId
+          ? _value.categoryId
+          : categoryId // ignore: cast_nullable_to_non_nullable
+              as int?,
+      category: freezed == category
+          ? _value.category
+          : category // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -114,7 +131,9 @@ abstract class _$$ProductModelImplCopyWith<$Res>
       @JsonKey(name: 'name') String? name,
       @JsonKey(name: 'description') String? description,
       @JsonKey(name: 'price') double? price,
-      @JsonKey(name: 'created_by') int? createdBy});
+      @JsonKey(name: 'created_by') int? createdBy,
+      @JsonKey(name: 'category_id') int? categoryId,
+      @JsonKey(name: 'category') String? category});
 }
 
 /// @nodoc
@@ -135,6 +154,8 @@ class __$$ProductModelImplCopyWithImpl<$Res>
     Object? description = freezed,
     Object? price = freezed,
     Object? createdBy = freezed,
+    Object? categoryId = freezed,
+    Object? category = freezed,
   }) {
     return _then(_$ProductModelImpl(
       id: freezed == id
@@ -157,6 +178,14 @@ class __$$ProductModelImplCopyWithImpl<$Res>
           ? _value.createdBy
           : createdBy // ignore: cast_nullable_to_non_nullable
               as int?,
+      categoryId: freezed == categoryId
+          ? _value.categoryId
+          : categoryId // ignore: cast_nullable_to_non_nullable
+              as int?,
+      category: freezed == category
+          ? _value.category
+          : category // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -169,7 +198,9 @@ class _$ProductModelImpl implements _ProductModel {
       @JsonKey(name: 'name') this.name,
       @JsonKey(name: 'description') this.description,
       @JsonKey(name: 'price') this.price,
-      @JsonKey(name: 'created_by') this.createdBy});
+      @JsonKey(name: 'created_by') this.createdBy,
+      @JsonKey(name: 'category_id') this.categoryId,
+      @JsonKey(name: 'category') this.category});
 
   factory _$ProductModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$ProductModelImplFromJson(json);
@@ -189,10 +220,17 @@ class _$ProductModelImpl implements _ProductModel {
   @override
   @JsonKey(name: 'created_by')
   final int? createdBy;
+  @override
+  @JsonKey(name: 'category_id')
+  final int? categoryId;
+// Add category_id field
+  @override
+  @JsonKey(name: 'category')
+  final String? category;
 
   @override
   String toString() {
-    return 'ProductModel(id: $id, name: $name, description: $description, price: $price, createdBy: $createdBy)';
+    return 'ProductModel(id: $id, name: $name, description: $description, price: $price, createdBy: $createdBy, categoryId: $categoryId, category: $category)';
   }
 
   @override
@@ -206,13 +244,17 @@ class _$ProductModelImpl implements _ProductModel {
                 other.description == description) &&
             (identical(other.price, price) || other.price == price) &&
             (identical(other.createdBy, createdBy) ||
-                other.createdBy == createdBy));
+                other.createdBy == createdBy) &&
+            (identical(other.categoryId, categoryId) ||
+                other.categoryId == categoryId) &&
+            (identical(other.category, category) ||
+                other.category == category));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, name, description, price, createdBy);
+  int get hashCode => Object.hash(runtimeType, id, name, description, price,
+      createdBy, categoryId, category);
 
   /// Create a copy of ProductModel
   /// with the given fields replaced by the non-null parameter values.
@@ -236,7 +278,9 @@ abstract class _ProductModel implements ProductModel {
       @JsonKey(name: 'name') final String? name,
       @JsonKey(name: 'description') final String? description,
       @JsonKey(name: 'price') final double? price,
-      @JsonKey(name: 'created_by') final int? createdBy}) = _$ProductModelImpl;
+      @JsonKey(name: 'created_by') final int? createdBy,
+      @JsonKey(name: 'category_id') final int? categoryId,
+      @JsonKey(name: 'category') final String? category}) = _$ProductModelImpl;
 
   factory _ProductModel.fromJson(Map<String, dynamic> json) =
       _$ProductModelImpl.fromJson;
@@ -256,6 +300,12 @@ abstract class _ProductModel implements ProductModel {
   @override
   @JsonKey(name: 'created_by')
   int? get createdBy;
+  @override
+  @JsonKey(name: 'category_id')
+  int? get categoryId; // Add category_id field
+  @override
+  @JsonKey(name: 'category')
+  String? get category;
 
   /// Create a copy of ProductModel
   /// with the given fields replaced by the non-null parameter values.

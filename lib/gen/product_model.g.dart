@@ -13,6 +13,8 @@ _$ProductModelImpl _$$ProductModelImplFromJson(Map<String, dynamic> json) =>
       description: json['description'] as String?,
       price: (json['price'] as num?)?.toDouble(),
       createdBy: (json['created_by'] as num?)?.toInt(),
+      categoryId: (json['category_id'] as num?)?.toInt(),
+      category: json['category'] as String?,
     );
 
 Map<String, dynamic> _$$ProductModelImplToJson(_$ProductModelImpl instance) =>
@@ -22,4 +24,6 @@ Map<String, dynamic> _$$ProductModelImplToJson(_$ProductModelImpl instance) =>
       if (instance.description case final value?) 'description': value,
       if (instance.price case final value?) 'price': value,
       if (instance.createdBy case final value?) 'created_by': value,
+      if (instance.categoryId case final value?) 'category_id': value,
+      if (instance.category case final value?) 'category': value,
     };
