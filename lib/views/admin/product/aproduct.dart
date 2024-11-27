@@ -1,6 +1,6 @@
 import 'package:ecommerce_flutter/models/product_model.dart';
+import 'package:ecommerce_flutter/views/admin/product/add_product.dart';
 import 'package:ecommerce_flutter/views/admin/product/aproductVM.dart';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -140,95 +140,6 @@ class AProductScreen extends StatelessWidget {
             child: const Text('Update', style: TextStyle(color: Colors.blue)),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class AddProductDrawer extends StatelessWidget {
-  const AddProductDrawer({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final vm = Provider.of<AProductVM>(context, listen: false);
-
-    return Drawer(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Add New Product',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.teal,
-              ),
-            ),
-            const SizedBox(height: 20),
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Product Name',
-                border: OutlineInputBorder(),
-              ),
-              onChanged: (x) {
-                vm.product = vm.product.copyWith(name: x);
-              },
-            ),
-            const SizedBox(height: 10),
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Description',
-                border: OutlineInputBorder(),
-              ),
-              onChanged: (x) {
-                vm.product = vm.product.copyWith(description: x);
-              },
-            ),
-            const SizedBox(height: 10),
-            TextFormField(
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                labelText: 'Price',
-                border: OutlineInputBorder(),
-              ),
-              onChanged: (x) {
-                vm.product = vm.product.copyWith(price: double.parse(x));
-              },
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () async {
-                // Call addProduct asynchronously
-                await vm.addProduct((success) {
-                  // Show SnackBar after the product is added successfully
-                  if (success) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text("Product Added Successfully"),
-                        backgroundColor: Colors.green,
-                      ),
-                    );
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text("Failed to Add Product"),
-                        backgroundColor: Colors.red,
-                      ),
-                    );
-                  }
-                });
-
-                // Pop the current screen after the product is added
-                Navigator.pop(context);
-                vm.fetchProducts();
-              },
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.teal),
-              child: const Text('Add Product'),
-            ),
-          ],
-        ),
       ),
     );
   }
