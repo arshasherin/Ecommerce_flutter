@@ -2,6 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part '../gen/product_model.freezed.dart';
 part '../gen/product_model.g.dart';
 
+
 @freezed
 class ProductModel with _$ProductModel {
   const factory ProductModel({
@@ -16,4 +17,15 @@ class ProductModel with _$ProductModel {
 
   factory ProductModel.fromJson(Map<String, dynamic> json) =>
       _$ProductModelFromJson(json);
+}
+
+@freezed
+class CategoryWithProductsModel with _$CategoryWithProductsModel {
+  const factory CategoryWithProductsModel({
+    @JsonKey(name: 'category') String? category,
+    @JsonKey(name: 'products') List<ProductModel>? products,
+  }) = _CategoryWithProductsModel;
+
+  factory CategoryWithProductsModel.fromJson(Map<String, dynamic> json) =>
+      _$CategoryWithProductsModelFromJson(json);
 }

@@ -31,7 +31,7 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
     case AProductScreen.routeName:
       return MaterialPageRoute(
         settings: routeSettings,
-        builder: (_) => const AProductScreen(),
+        builder: (_) =>  AProductScreen(),
       );
     case UserList.routeName:
       return MaterialPageRoute(

@@ -314,3 +314,199 @@ abstract class _ProductModel implements ProductModel {
   _$$ProductModelImplCopyWith<_$ProductModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
+
+CategoryWithProductsModel _$CategoryWithProductsModelFromJson(
+    Map<String, dynamic> json) {
+  return _CategoryWithProductsModel.fromJson(json);
+}
+
+/// @nodoc
+mixin _$CategoryWithProductsModel {
+  @JsonKey(name: 'category')
+  String? get category => throw _privateConstructorUsedError;
+  @JsonKey(name: 'products')
+  List<ProductModel>? get products => throw _privateConstructorUsedError;
+
+  /// Serializes this CategoryWithProductsModel to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of CategoryWithProductsModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $CategoryWithProductsModelCopyWith<CategoryWithProductsModel> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $CategoryWithProductsModelCopyWith<$Res> {
+  factory $CategoryWithProductsModelCopyWith(CategoryWithProductsModel value,
+          $Res Function(CategoryWithProductsModel) then) =
+      _$CategoryWithProductsModelCopyWithImpl<$Res, CategoryWithProductsModel>;
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'category') String? category,
+      @JsonKey(name: 'products') List<ProductModel>? products});
+}
+
+/// @nodoc
+class _$CategoryWithProductsModelCopyWithImpl<$Res,
+        $Val extends CategoryWithProductsModel>
+    implements $CategoryWithProductsModelCopyWith<$Res> {
+  _$CategoryWithProductsModelCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of CategoryWithProductsModel
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? category = freezed,
+    Object? products = freezed,
+  }) {
+    return _then(_value.copyWith(
+      category: freezed == category
+          ? _value.category
+          : category // ignore: cast_nullable_to_non_nullable
+              as String?,
+      products: freezed == products
+          ? _value.products
+          : products // ignore: cast_nullable_to_non_nullable
+              as List<ProductModel>?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$CategoryWithProductsModelImplCopyWith<$Res>
+    implements $CategoryWithProductsModelCopyWith<$Res> {
+  factory _$$CategoryWithProductsModelImplCopyWith(
+          _$CategoryWithProductsModelImpl value,
+          $Res Function(_$CategoryWithProductsModelImpl) then) =
+      __$$CategoryWithProductsModelImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'category') String? category,
+      @JsonKey(name: 'products') List<ProductModel>? products});
+}
+
+/// @nodoc
+class __$$CategoryWithProductsModelImplCopyWithImpl<$Res>
+    extends _$CategoryWithProductsModelCopyWithImpl<$Res,
+        _$CategoryWithProductsModelImpl>
+    implements _$$CategoryWithProductsModelImplCopyWith<$Res> {
+  __$$CategoryWithProductsModelImplCopyWithImpl(
+      _$CategoryWithProductsModelImpl _value,
+      $Res Function(_$CategoryWithProductsModelImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of CategoryWithProductsModel
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? category = freezed,
+    Object? products = freezed,
+  }) {
+    return _then(_$CategoryWithProductsModelImpl(
+      category: freezed == category
+          ? _value.category
+          : category // ignore: cast_nullable_to_non_nullable
+              as String?,
+      products: freezed == products
+          ? _value._products
+          : products // ignore: cast_nullable_to_non_nullable
+              as List<ProductModel>?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$CategoryWithProductsModelImpl implements _CategoryWithProductsModel {
+  const _$CategoryWithProductsModelImpl(
+      {@JsonKey(name: 'category') this.category,
+      @JsonKey(name: 'products') final List<ProductModel>? products})
+      : _products = products;
+
+  factory _$CategoryWithProductsModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$CategoryWithProductsModelImplFromJson(json);
+
+  @override
+  @JsonKey(name: 'category')
+  final String? category;
+  final List<ProductModel>? _products;
+  @override
+  @JsonKey(name: 'products')
+  List<ProductModel>? get products {
+    final value = _products;
+    if (value == null) return null;
+    if (_products is EqualUnmodifiableListView) return _products;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  @override
+  String toString() {
+    return 'CategoryWithProductsModel(category: $category, products: $products)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$CategoryWithProductsModelImpl &&
+            (identical(other.category, category) ||
+                other.category == category) &&
+            const DeepCollectionEquality().equals(other._products, _products));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType, category, const DeepCollectionEquality().hash(_products));
+
+  /// Create a copy of CategoryWithProductsModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$CategoryWithProductsModelImplCopyWith<_$CategoryWithProductsModelImpl>
+      get copyWith => __$$CategoryWithProductsModelImplCopyWithImpl<
+          _$CategoryWithProductsModelImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$CategoryWithProductsModelImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _CategoryWithProductsModel implements CategoryWithProductsModel {
+  const factory _CategoryWithProductsModel(
+          {@JsonKey(name: 'category') final String? category,
+          @JsonKey(name: 'products') final List<ProductModel>? products}) =
+      _$CategoryWithProductsModelImpl;
+
+  factory _CategoryWithProductsModel.fromJson(Map<String, dynamic> json) =
+      _$CategoryWithProductsModelImpl.fromJson;
+
+  @override
+  @JsonKey(name: 'category')
+  String? get category;
+  @override
+  @JsonKey(name: 'products')
+  List<ProductModel>? get products;
+
+  /// Create a copy of CategoryWithProductsModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$CategoryWithProductsModelImplCopyWith<_$CategoryWithProductsModelImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}

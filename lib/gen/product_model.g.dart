@@ -27,3 +27,20 @@ Map<String, dynamic> _$$ProductModelImplToJson(_$ProductModelImpl instance) =>
       if (instance.categoryId case final value?) 'category_id': value,
       if (instance.category case final value?) 'category': value,
     };
+
+_$CategoryWithProductsModelImpl _$$CategoryWithProductsModelImplFromJson(
+        Map<String, dynamic> json) =>
+    _$CategoryWithProductsModelImpl(
+      category: json['category'] as String?,
+      products: (json['products'] as List<dynamic>?)
+          ?.map((e) => ProductModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$$CategoryWithProductsModelImplToJson(
+        _$CategoryWithProductsModelImpl instance) =>
+    <String, dynamic>{
+      if (instance.category case final value?) 'category': value,
+      if (instance.products?.map((e) => e.toJson()).toList() case final value?)
+        'products': value,
+    };

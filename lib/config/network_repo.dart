@@ -34,7 +34,55 @@ class ApiProvider {
       throw Exception('API call failed: $error');
     }
   }
+Future<List<dynamic>> getListA(String endpoint) async {
+  try {
+    final boxOpen = await db.openBox("token");
+    final token = db.fromDb(boxOpen, 'key');
 
+    // Check if token is null or empty
+    if (token == null || token.isEmpty) {
+      throw Exception("No token found. Please log in again.");
+    }
+
+    // Log token and headers for debugging
+    printx('Token', token);
+
+    final response = await http.get(
+      Uri.parse('$baseUrl/$endpoint'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    // Log the full response for debugging
+    printx('Response Status Code', response.statusCode);
+    printx('Response Body', response.body);
+
+    // Check if the response is successful
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      final decodedResponse = jsonDecode(response.body);
+
+      // Check if the decoded response is a List
+      if (decodedResponse is List) {
+        return decodedResponse;
+      } else if (decodedResponse is Map) {
+        // If it's a Map, check for the data key or handle as necessary
+        return decodedResponse['data'] != null
+            ? decodedResponse['data'] as List<dynamic>
+            : [];
+      } else {
+        throw Exception('Unexpected response format: ${decodedResponse.runtimeType}');
+      }
+    } else {
+      throw Exception(
+          'Failed to fetch data. Status code: ${response.statusCode}');
+    }
+  } catch (error) {
+    printx('Error making GET API call', error);
+    throw Exception('Failed to make GET API call: $error');
+  }
+}
   Future<Map<String, dynamic>> post(
       String endpoint, Map<String, dynamic> body) async {
     try {
