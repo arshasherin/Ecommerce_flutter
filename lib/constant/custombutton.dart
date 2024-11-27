@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CustomButton extends StatelessWidget {
-  final String text;
+  final String? text;
   final VoidCallback onTap;
   final Color? color;
   final Color? textColor;
@@ -16,7 +16,7 @@ class CustomButton extends StatelessWidget {
 
   const CustomButton({
     super.key,
-    required this.text,
+    this.text,
     required this.onTap,
     this.color,
     this.textColor,
@@ -55,7 +55,7 @@ class CustomButton extends StatelessWidget {
               ),
             if (icon != null) const SizedBox(width: 8), 
             Text(
-              text,
+              text??"",
               style: TextStyle(
                 color: textColor ?? Colors.white,
                 fontSize: fontSize,
