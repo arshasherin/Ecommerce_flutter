@@ -79,27 +79,83 @@ class AddProductDrawer extends StatelessWidget {
             10.height,
             Consumer<AProductVM>(
               builder: (context, vm, child) {
-                return DropdownButtonFormField<CategoryModel>(
-                  decoration: const InputDecoration(
-                    labelText: 'Category',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                return Row(
+                  children: [
+                    Expanded(
+                      child: DropdownButtonFormField<CategoryModel>(
+                        decoration: const InputDecoration(
+                          labelText: 'Category',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                          ),
+                        ),
+                        value: vm.selectedCategory, // Expecting CategoryModel
+                        items: vm.categories
+                            .map((category) => DropdownMenuItem<CategoryModel>(
+                                  value: category, // Pass the CategoryModel object
+                                  child: Text(category.name
+                                      .toString()), // Display the category name
+                                ))
+                            .toList(),
+                        onChanged: (value) {
+                          if (value != null) {
+                            vm.selectCategory(
+                                value); // Pass the selected CategoryModel
+                          }
+                        },
+                      ),
                     ),
-                  ),
-                  value: vm.selectedCategory, // Expecting CategoryModel
-                  items: vm.categories
-                      .map((category) => DropdownMenuItem<CategoryModel>(
-                            value: category, // Pass the CategoryModel object
-                            child: Text(category.name
-                                .toString()), // Display the category name
-                          ))
-                      .toList(),
-                  onChanged: (value) {
-                    if (value != null) {
-                      vm.selectCategory(
-                          value); // Pass the selected CategoryModel
-                    }
-                  },
+                     10.width,
+                    CustomButton(
+                      height: 40,
+                      // width: ,
+                      color: CustomColors.primaryColors,
+                      icon:Icons.add ,
+                      iconSize: 16,
+                      iconColor: CustomColors.appBarTextColor,
+                       onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            String newCategoryName = '';
+                            return AlertDialog(
+                              title: const Text("Add Category"),
+                              content: TextField(
+                                decoration: const InputDecoration(hintText: "Enter category name"),
+                                onChanged: (value) {
+                                  newCategoryName = value;
+                                },
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text("Cancel"),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    if (newCategoryName.isNotEmpty) {
+                                      Navigator.pop(context);
+                                    } else {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                          content: Text("Category name cannot be empty"),
+                                          backgroundColor: Colors.red,
+                                        ),
+                                      );
+                                    }
+                                  },
+                                  child: const Text("Add"),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      
+                    ),
+                  ],
                 );
               },
             ),
