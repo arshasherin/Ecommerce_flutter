@@ -97,7 +97,7 @@ class AddProductDrawer extends StatelessWidget {
                           items: vm.categories.map((category) => DropdownMenuItem<CategoryModel>(value: category, child: Text(category.name.toString()))).toList(),
                           onChanged: (value) {
                             if (value != null) {
-                              vm.selectCategory(value); 
+                              vm.selectCategory(value);
                             }
                           }),
                     ),
@@ -140,6 +140,7 @@ class AddProductDrawer extends StatelessWidget {
                                           TextButton(
                                               onPressed: () {
                                                 vm.deleteCategory(vm.selectedCategory?.id);
+                                                Navigator.pop(context);
                                               },
                                               child: const Text("Delete", style: TextStyle(color: CustomColors.primaryColors))),
                                         ],
