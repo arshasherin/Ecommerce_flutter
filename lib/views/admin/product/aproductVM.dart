@@ -116,12 +116,9 @@ class AProductVM extends ChangeNotifier {
 
   Future<void> addCategory(CategoryModel? categoryData, bool? isUpdate,int?CatId) async {
     category = category.copyWith(id: categoryData?.id, name: categoryData?.name);
-    print("ppppppppppp" + CatId.toString());
     if (isUpdate == false) {
-      print("addding");
       await apiProvider.post('admin/category', category.toJson());
     } else {
-      print("editing");
       await apiProvider.put('admin/category/${CatId}', category.toJson());
     }
     category = const CategoryModel();
