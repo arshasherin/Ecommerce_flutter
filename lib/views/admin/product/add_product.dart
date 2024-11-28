@@ -97,7 +97,7 @@ class AddProductDrawer extends StatelessWidget {
                           items: vm.categories.map((category) => DropdownMenuItem<CategoryModel>(value: category, child: Text(category.name.toString()))).toList(),
                           onChanged: (value) {
                             if (value != null) {
-                              vm.selectCategory(value); // Pass the selected CategoryModel
+                              vm.selectCategory(value); 
                             }
                           }),
                     ),
