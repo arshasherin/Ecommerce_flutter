@@ -56,29 +56,23 @@ class AProductVM extends ChangeNotifier {
     bool success = false;
     try {
       // Send the message to the API
-      final response =
-          await apiProvider.post('admin/ai-chatbot', {"message": message});
+      final response = await apiProvider.post('admin/ai-chatbot', {"message": message});
 
       // Assuming response is a decoded JSON map, check the success status
       if (response != null && response is Map<String, dynamic>) {
         // Check if the response is successful and extract the response text
         if (response['success'] == true) {
-          String aiResponse =
-              response['response']; // Get the response from the AI
+          String aiResponse = response['response']; // Get the response from the AI
 
           // Add the user's message and AI's response to the message list
           _messages.add({'sender': 'user', 'text': message});
           _messages.add({'sender': 'ai', 'text': aiResponse});
           success = true;
         } else {
-          _messages.add({
-            'sender': 'ai',
-            'text': "Error: Unable to get a valid response."
-          });
+          _messages.add({'sender': 'ai', 'text': "Error: Unable to get a valid response."});
         }
       } else {
-        _messages
-            .add({'sender': 'ai', 'text': "Error: Invalid response format."});
+        _messages.add({'sender': 'ai', 'text': "Error: Invalid response format."});
       }
 
       notifyListeners(); // Notify listeners of the update
@@ -104,12 +98,10 @@ class AProductVM extends ChangeNotifier {
         name: product.name,
         description: product.description,
         price: product.price,
-        categoryId: _selectedCategory!.id, // Add the selected category ID
+        categoryId: _selectedCategory!.id,
       );
 
-      printx(
-          ".....................././././././././././././././. prodycts with categotu ixd ",
-          product);
+      printx(".....................././././././././././././././. prodycts with categotu ixd ", product);
 
       await apiProvider.post('admin/add', product.toJson());
       success = true;
@@ -122,19 +114,20 @@ class AProductVM extends ChangeNotifier {
     }
   }
 
-   Future<void> addCategory(CategoryModel? categoryData, bool? isUpdate) async {
+  Future<void> addCategory(CategoryModel? categoryData, bool? isUpdate,int?CatId) async {
     category = category.copyWith(id: categoryData?.id, name: categoryData?.name);
-        print("ppppppppppp" + category.toString());
-    if (isUpdate == true) {
+    print("ppppppppppp" + CatId.toString());
+    if (isUpdate == false) {
+      print("addding");
       await apiProvider.post('admin/category', category.toJson());
-    }else{
-     await apiProvider.put('admin/category/${categoryData?.id}', category.toJson());
+    } else {
+      print("editing");
+      await apiProvider.put('admin/category/${CatId}', category.toJson());
     }
     category = const CategoryModel();
     fetchCategories();
     notifyListeners();
   }
-
 
   Future<void> fetchProducts({int? categoryId}) async {
     isLoaded = false;
@@ -152,14 +145,10 @@ class AProductVM extends ChangeNotifier {
     try {
       final response = await apiProvider.getListA(url);
       _logger.d('Fetched Products Response: $response');
-      categoryWithProductsModel = response
-          .map<CategoryWithProductsModel>(
-              (data) => CategoryWithProductsModel.fromJson(data))
-          .toList();
+      categoryWithProductsModel = response.map<CategoryWithProductsModel>((data) => CategoryWithProductsModel.fromJson(data)).toList();
       isLoaded = true;
     } catch (error, stackTrace) {
-      _logger.e('Error fetching products: $error',
-          error: error, stackTrace: stackTrace);
+      _logger.e('Error fetching products: $error', error: error, stackTrace: stackTrace);
       hasError = true;
       errorMessage = error.toString();
     } finally {
@@ -178,15 +167,13 @@ class AProductVM extends ChangeNotifier {
       await fetchProducts();
     } catch (error, stackTrace) {
       // Log error details for debugging
-      _logger.e("Error deleting product: $error",
-          error: error, stackTrace: stackTrace);
+      _logger.e("Error deleting product: $error", error: error, stackTrace: stackTrace);
     }
   }
 
   Future<void> updateProduct(int id, ProductModel updatedProduct) async {
     try {
-      final response =
-          await apiProvider.put('admin/product/$id', updatedProduct.toJson());
+      final response = await apiProvider.put('admin/product/$id', updatedProduct.toJson());
       _logger.d("Product updated successfully: $response");
 
       // Update the local list
@@ -197,8 +184,7 @@ class AProductVM extends ChangeNotifier {
       }
       await fetchProducts();
     } catch (error, stackTrace) {
-      _logger.e("Error updating product: $error",
-          error: error, stackTrace: stackTrace);
+      _logger.e("Error updating product: $error", error: error, stackTrace: stackTrace);
     }
   }
 
@@ -213,14 +199,11 @@ class AProductVM extends ChangeNotifier {
       final response = await apiProvider.getList('admin/categories');
 
       _logger.d('Fetched categories Response user: $response');
-      categories = response
-          .map<CategoryModel>((data) => CategoryModel.fromJson(data))
-          .toList();
+      categories = response.map<CategoryModel>((data) => CategoryModel.fromJson(data)).toList();
 
       isLoaded = true;
     } catch (error, stackTrace) {
-      _logger.e('Error fetching products: $error',
-          error: error, stackTrace: stackTrace);
+      _logger.e('Error fetching products: $error', error: error, stackTrace: stackTrace);
       hasError = true;
       errorMessage = error.toString();
     } finally {

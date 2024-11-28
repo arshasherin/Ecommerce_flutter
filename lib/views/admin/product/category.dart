@@ -31,7 +31,7 @@ class Category extends StatelessWidget {
           TextButton(
             onPressed: () {
               if (vm.category.name!.isNotEmpty) {
-             isUpdate==true?vm.addCategory(vm.category,isUpdate):vm.addCategory(category,isUpdate);
+             isUpdate==true?vm.addCategory(vm.category,isUpdate,category?.id):vm.addCategory(vm.category,isUpdate,category?.id);
                 Navigator.pop(context);
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
