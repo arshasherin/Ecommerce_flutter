@@ -99,7 +99,7 @@ class AddProductDrawer extends StatelessWidget {
                         }).toList(),
                         onChanged: (value) {
                           if (value != null) {
-                            vm.selectCategory(value); // Ensure this updates vm.selectedCategory
+                            vm.selectCategory(value); 
                           }
                         },
                       ),
