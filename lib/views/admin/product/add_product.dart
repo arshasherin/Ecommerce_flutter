@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../../../constant/constant.dart';
 import '../../../constant/custombutton.dart';
+import 'category.dart';
 
 class AddProductDrawer extends StatelessWidget {
   const AddProductDrawer({super.key});
@@ -83,30 +84,34 @@ class AddProductDrawer extends StatelessWidget {
                   children: [
                     Expanded(
                       child: DropdownButtonFormField<CategoryModel>(
-                        decoration: const InputDecoration(
-                          labelText: 'Category',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                          ),
-                        ),
-                        value: vm.selectedCategory, // Expecting CategoryModel
-                        items: vm.categories
-                            .map((category) => DropdownMenuItem<CategoryModel>(
-                                  value: category, // Pass the CategoryModel object
-                                  child: Text(category.name.toString()), // Display the category name
-                                ))
-                            .toList(),
-                        onChanged: (value) {
-                          if (value != null) {
-                            vm.selectCategory(value); // Pass the selected CategoryModel
-                          }
-                        },
-                      ),
+                          decoration: const InputDecoration(labelText: 'Category', border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)))),
+                          value: vm.selectedCategory, // Expecting CategoryModel
+                          items: vm.categories
+                              .map((category) => DropdownMenuItem<CategoryModel>(
+                                    value: category, // Pass the CategoryModel object
+                                    child: Text(category.name.toString()), // Display the category name
+                                  ))
+                              .toList(),
+                          onChanged: (value) {
+                            if (value != null) {
+                              vm.selectCategory(value); // Pass the selected CategoryModel
+                            }
+                          }),
                     ),
+                    if (vm.selectedCategory?.name != null) 10.width,
+                    if (vm.selectedCategory?.name != null) IconButton(onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return  Category(isUpdate: true,category: vm.selectedCategory,);
+                          },
+                        ); 
+                    }, icon:const Icon(Icons.update)),
+                    if (vm.selectedCategory?.name != null) 5.width,
+                    if (vm.selectedCategory?.name != null) IconButton(onPressed: () {}, icon:const Icon(Icons.delete)),
                     10.width,
                     CustomButton(
                       height: 40,
-                      // width: ,
                       color: CustomColors.primaryColors,
                       icon: Icons.add,
                       iconSize: 16,
@@ -115,39 +120,7 @@ class AddProductDrawer extends StatelessWidget {
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: const Text("Add Category"),
-                              content: TextField(
-                                decoration: const InputDecoration(hintText: "Enter category name"),
-                                onChanged: (value) {
-                                  vm.category = vm.category.copyWith(name: value);
-                                },
-                              ),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: const Text("Cancel"),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    if (vm.category.name!.isNotEmpty) {
-                                      vm.addCategory(vm.category.name.toString(),vm.category.id);
-                                      Navigator.pop(context);
-                                    } else {
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        const SnackBar(
-                                          content: Text("Category name cannot be empty"),
-                                          backgroundColor: Colors.red,
-                                        ),
-                                      );
-                                    }
-                                  },
-                                  child: const Text("Add"),
-                                ),
-                              ],
-                            );
+                            return const Category(isUpdate: false,);
                           },
                         );
                       },

@@ -122,14 +122,19 @@ class AProductVM extends ChangeNotifier {
     }
   }
 
-  Future<void> addCategory(String? Category, int? id) async {
-    category = category.copyWith(id: id, name: Category);
-    await apiProvider.post('admin/category', category.toJson());
-    print("ppppppppppp" + category.toString());
-    category = CategoryModel();
+   Future<void> addCategory(CategoryModel? categoryData, bool? isUpdate) async {
+    category = category.copyWith(id: categoryData?.id, name: categoryData?.name);
+        print("ppppppppppp" + category.toString());
+    if (isUpdate == true) {
+      await apiProvider.post('admin/category', category.toJson());
+    }else{
+     await apiProvider.put('admin/category/${categoryData?.id}', category.toJson());
+    }
+    category = const CategoryModel();
     fetchCategories();
     notifyListeners();
   }
+
 
   Future<void> fetchProducts({int? categoryId}) async {
     isLoaded = false;
