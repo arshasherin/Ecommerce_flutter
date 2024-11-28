@@ -99,7 +99,7 @@ class AddProductDrawer extends StatelessWidget {
                         }).toList(),
                         onChanged: (value) {
                           if (value != null) {
-                            vm.selectCategory(value); 
+                            vm.selectCategory(value);
                           }
                         },
                       ),
@@ -120,7 +120,38 @@ class AddProductDrawer extends StatelessWidget {
                           },
                           icon: const Icon(Icons.update)),
                     if (vm.selectedCategory?.name != null) 5.width,
-                    if (vm.selectedCategory?.name != null) IconButton(onPressed: () {}, icon: const Icon(Icons.delete)),
+                    if (vm.selectedCategory?.name != null)
+                      IconButton(
+                          onPressed: () {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text(
+                                      "Are you sure you want to delete this category?",
+                                      style: TextStyle(fontSize: 15),
+                                    ),
+                                    actions: [
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        children: [
+                                          TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: const Text("Cancel", style: TextStyle(color: CustomColors.primaryColors))),
+                                          TextButton(
+                                              onPressed: () {
+                                                vm.deleteCategory(vm.selectedCategory?.id);
+                                              },
+                                              child: const Text("Delete", style: TextStyle(color: CustomColors.primaryColors))),
+                                        ],
+                                      )
+                                    ],
+                                  );
+                                });
+                          },
+                          icon: const Icon(Icons.delete)),
                     10.width,
                     CustomButton(
                       height: 40,
