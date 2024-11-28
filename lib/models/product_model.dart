@@ -13,6 +13,7 @@ class ProductModel with _$ProductModel {
     @JsonKey(name: 'created_by') int? createdBy,
     @JsonKey(name: 'category_id') int? categoryId, // Add category_id field
     @JsonKey(name: 'category') String? category,    // Add category field (category name)
+     @JsonKey(name: 'image_url') String? imageUrl,
   }) = _ProductModel;
 
   factory ProductModel.fromJson(Map<String, dynamic> json) =>

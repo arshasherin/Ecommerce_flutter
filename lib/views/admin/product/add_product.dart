@@ -20,7 +20,11 @@ class AddProductDrawer extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Text('Add New Product', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: CustomColors.headingTextColor)),
+            const Text('Add New Product',
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    color: CustomColors.headingTextColor)),
             20.height,
             Center(
               child: Container(
@@ -37,18 +41,34 @@ class AddProductDrawer extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text("Product Image", style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 12, fontWeight: FontWeight.w400)),
+                      Text("Product Image",
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall
+                              ?.copyWith(
+                                  fontSize: 12, fontWeight: FontWeight.w400)),
                       Container(
                         height: 99,
                         width: 99,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
                           color: CustomColors.backgroundColor,
-                          image: const DecorationImage(image: NetworkImage(""), fit: BoxFit.cover),
+                          image: const DecorationImage(
+                              image: NetworkImage(""), fit: BoxFit.cover),
                         ),
                       ),
                       5.height,
-                      CustomButton(borderRadius: 5, icon: Icons.file_upload, text: "", color: CustomColors.primaryColors, textColor: Colors.white, iconSize: 20, fontSize: 12, height: 30, width: 99, onTap: () {}),
+                      CustomButton(
+                          borderRadius: 5,
+                          icon: Icons.file_upload,
+                          text: "",
+                          color: CustomColors.primaryColors,
+                          textColor: Colors.white,
+                          iconSize: 20,
+                          fontSize: 12,
+                          height: 30,
+                          width: 99,
+                          onTap: () {}),
                     ],
                   ),
                 ),
@@ -56,7 +76,10 @@ class AddProductDrawer extends StatelessWidget {
             ),
             10.height,
             TextFormField(
-              decoration: const InputDecoration(labelText: 'Product Name', border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)))),
+              decoration: const InputDecoration(
+                  labelText: 'Product Name',
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)))),
               onChanged: (x) {
                 vm.product = vm.product.copyWith(name: x);
               },
@@ -64,7 +87,10 @@ class AddProductDrawer extends StatelessWidget {
             10.height,
             TextFormField(
               maxLines: 4,
-              decoration: const InputDecoration(labelText: 'Description', border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)))),
+              decoration: const InputDecoration(
+                  labelText: 'Description',
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)))),
               onChanged: (x) {
                 vm.product = vm.product.copyWith(description: x);
               },
@@ -72,9 +98,23 @@ class AddProductDrawer extends StatelessWidget {
             10.height,
             TextFormField(
               keyboardType: TextInputType.number,
-              decoration: const InputDecoration(labelText: 'Price', border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)))),
+              decoration: const InputDecoration(
+                  labelText: 'Price',
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)))),
               onChanged: (x) {
                 vm.product = vm.product.copyWith(price: double.parse(x));
+              },
+            ),
+            10.height,
+            TextFormField(
+              keyboardType: TextInputType.text,
+              decoration: const InputDecoration(
+                  labelText: 'Image URL',
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)))),
+              onChanged: (x) {
+                vm.product = vm.product.copyWith(imageUrl: x);
               },
             ),
             10.height,
@@ -84,25 +124,27 @@ class AddProductDrawer extends StatelessWidget {
                   children: [
                     Expanded(
                       child: DropdownButtonFormField<CategoryModel>(
-                        decoration: const InputDecoration(
-                          labelText: 'Category',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                          ),
-                        ),
-                        value: vm.categories.contains(vm.selectedCategory) ? vm.selectedCategory : null,
-                        items: vm.categories.map((category) {
-                          return DropdownMenuItem<CategoryModel>(
-                            value: category,
-                            child: Text(category.name.toString()),
-                          );
-                        }).toList(),
-                        onChanged: (value) {
-                          if (value != null) {
-                            vm.selectCategory(value);
-                          }
-                        },
-                      ),
+                          decoration: const InputDecoration(
+                              labelText: 'Category',
+                              border: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)))),
+                          value: vm.selectedCategory, // Expecting CategoryModel
+                          items: vm.categories
+                              .map(
+                                  (category) => DropdownMenuItem<CategoryModel>(
+                                        value:
+                                            category, // Pass the CategoryModel object
+                                        child: Text(category.name
+                                            .toString()), // Display the category name
+                                      ))
+                              .toList(),
+                          onChanged: (value) {
+                            if (value != null) {
+                              vm.selectCategory(
+                                  value); // Pass the selected CategoryModel
+                            }
+                          }),
                     ),
                     if (vm.selectedCategory?.name != null) 10.width,
                     if (vm.selectedCategory?.name != null)
@@ -122,36 +164,7 @@ class AddProductDrawer extends StatelessWidget {
                     if (vm.selectedCategory?.name != null) 5.width,
                     if (vm.selectedCategory?.name != null)
                       IconButton(
-                          onPressed: () {
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: const Text(
-                                      "Are you sure you want to delete this category?",
-                                      style: TextStyle(fontSize: 15),
-                                    ),
-                                    actions: [
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        children: [
-                                          TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              child: const Text("Cancel", style: TextStyle(color: CustomColors.primaryColors))),
-                                          TextButton(
-                                              onPressed: () {
-                                                vm.deleteCategory(vm.selectedCategory?.id);
-                                              },
-                                              child: const Text("Delete", style: TextStyle(color: CustomColors.primaryColors))),
-                                        ],
-                                      )
-                                    ],
-                                  );
-                                });
-                          },
-                          icon: const Icon(Icons.delete)),
+                          onPressed: () {}, icon: const Icon(Icons.delete)),
                     10.width,
                     CustomButton(
                       height: 40,
@@ -185,13 +198,17 @@ class AddProductDrawer extends StatelessWidget {
                 await vm.addProduct((success) {
                   if (success) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Product Added Successfully"), backgroundColor: Colors.green),
+                      const SnackBar(
+                          content: Text("Product Added Successfully"),
+                          backgroundColor: Colors.green),
                     );
                     Navigator.pop(context);
                     vm.fetchProducts();
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Failed to Add Product"), backgroundColor: Colors.red),
+                      const SnackBar(
+                          content: Text("Failed to Add Product"),
+                          backgroundColor: Colors.red),
                     );
                   }
                 });

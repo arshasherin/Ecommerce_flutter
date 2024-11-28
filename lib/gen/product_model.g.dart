@@ -15,6 +15,7 @@ _$ProductModelImpl _$$ProductModelImplFromJson(Map<String, dynamic> json) =>
       createdBy: (json['created_by'] as num?)?.toInt(),
       categoryId: (json['category_id'] as num?)?.toInt(),
       category: json['category'] as String?,
+      imageUrl: json['image_url'] as String?,
     );
 
 Map<String, dynamic> _$$ProductModelImplToJson(_$ProductModelImpl instance) =>
@@ -26,6 +27,7 @@ Map<String, dynamic> _$$ProductModelImplToJson(_$ProductModelImpl instance) =>
       if (instance.createdBy case final value?) 'created_by': value,
       if (instance.categoryId case final value?) 'category_id': value,
       if (instance.category case final value?) 'category': value,
+      if (instance.imageUrl case final value?) 'image_url': value,
     };
 
 _$CategoryWithProductsModelImpl _$$CategoryWithProductsModelImplFromJson(

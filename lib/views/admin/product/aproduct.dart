@@ -203,11 +203,7 @@ child: const AddProductDrawer()),
                   top: Radius.circular(8),
                 ),
               ),
-              child: const Icon(
-                Icons.shopping_bag_outlined,
-                size: 50,
-                color: Colors.teal,
-              ),
+              child: Image.network(product.imageUrl.toString()),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),

@@ -34,7 +34,10 @@ mixin _$ProductModel {
   int? get categoryId =>
       throw _privateConstructorUsedError; // Add category_id field
   @JsonKey(name: 'category')
-  String? get category => throw _privateConstructorUsedError;
+  String? get category =>
+      throw _privateConstructorUsedError; // Add category field (category name)
+  @JsonKey(name: 'image_url')
+  String? get imageUrl => throw _privateConstructorUsedError;
 
   /// Serializes this ProductModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -59,7 +62,8 @@ abstract class $ProductModelCopyWith<$Res> {
       @JsonKey(name: 'price') double? price,
       @JsonKey(name: 'created_by') int? createdBy,
       @JsonKey(name: 'category_id') int? categoryId,
-      @JsonKey(name: 'category') String? category});
+      @JsonKey(name: 'category') String? category,
+      @JsonKey(name: 'image_url') String? imageUrl});
 }
 
 /// @nodoc
@@ -84,6 +88,7 @@ class _$ProductModelCopyWithImpl<$Res, $Val extends ProductModel>
     Object? createdBy = freezed,
     Object? categoryId = freezed,
     Object? category = freezed,
+    Object? imageUrl = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -114,6 +119,10 @@ class _$ProductModelCopyWithImpl<$Res, $Val extends ProductModel>
           ? _value.category
           : category // ignore: cast_nullable_to_non_nullable
               as String?,
+      imageUrl: freezed == imageUrl
+          ? _value.imageUrl
+          : imageUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -133,7 +142,8 @@ abstract class _$$ProductModelImplCopyWith<$Res>
       @JsonKey(name: 'price') double? price,
       @JsonKey(name: 'created_by') int? createdBy,
       @JsonKey(name: 'category_id') int? categoryId,
-      @JsonKey(name: 'category') String? category});
+      @JsonKey(name: 'category') String? category,
+      @JsonKey(name: 'image_url') String? imageUrl});
 }
 
 /// @nodoc
@@ -156,6 +166,7 @@ class __$$ProductModelImplCopyWithImpl<$Res>
     Object? createdBy = freezed,
     Object? categoryId = freezed,
     Object? category = freezed,
+    Object? imageUrl = freezed,
   }) {
     return _then(_$ProductModelImpl(
       id: freezed == id
@@ -186,6 +197,10 @@ class __$$ProductModelImplCopyWithImpl<$Res>
           ? _value.category
           : category // ignore: cast_nullable_to_non_nullable
               as String?,
+      imageUrl: freezed == imageUrl
+          ? _value.imageUrl
+          : imageUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -200,7 +215,8 @@ class _$ProductModelImpl implements _ProductModel {
       @JsonKey(name: 'price') this.price,
       @JsonKey(name: 'created_by') this.createdBy,
       @JsonKey(name: 'category_id') this.categoryId,
-      @JsonKey(name: 'category') this.category});
+      @JsonKey(name: 'category') this.category,
+      @JsonKey(name: 'image_url') this.imageUrl});
 
   factory _$ProductModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$ProductModelImplFromJson(json);
@@ -227,10 +243,14 @@ class _$ProductModelImpl implements _ProductModel {
   @override
   @JsonKey(name: 'category')
   final String? category;
+// Add category field (category name)
+  @override
+  @JsonKey(name: 'image_url')
+  final String? imageUrl;
 
   @override
   String toString() {
-    return 'ProductModel(id: $id, name: $name, description: $description, price: $price, createdBy: $createdBy, categoryId: $categoryId, category: $category)';
+    return 'ProductModel(id: $id, name: $name, description: $description, price: $price, createdBy: $createdBy, categoryId: $categoryId, category: $category, imageUrl: $imageUrl)';
   }
 
   @override
@@ -248,13 +268,15 @@ class _$ProductModelImpl implements _ProductModel {
             (identical(other.categoryId, categoryId) ||
                 other.categoryId == categoryId) &&
             (identical(other.category, category) ||
-                other.category == category));
+                other.category == category) &&
+            (identical(other.imageUrl, imageUrl) ||
+                other.imageUrl == imageUrl));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, name, description, price,
-      createdBy, categoryId, category);
+      createdBy, categoryId, category, imageUrl);
 
   /// Create a copy of ProductModel
   /// with the given fields replaced by the non-null parameter values.
@@ -280,7 +302,8 @@ abstract class _ProductModel implements ProductModel {
       @JsonKey(name: 'price') final double? price,
       @JsonKey(name: 'created_by') final int? createdBy,
       @JsonKey(name: 'category_id') final int? categoryId,
-      @JsonKey(name: 'category') final String? category}) = _$ProductModelImpl;
+      @JsonKey(name: 'category') final String? category,
+      @JsonKey(name: 'image_url') final String? imageUrl}) = _$ProductModelImpl;
 
   factory _ProductModel.fromJson(Map<String, dynamic> json) =
       _$ProductModelImpl.fromJson;
@@ -305,7 +328,10 @@ abstract class _ProductModel implements ProductModel {
   int? get categoryId; // Add category_id field
   @override
   @JsonKey(name: 'category')
-  String? get category;
+  String? get category; // Add category field (category name)
+  @override
+  @JsonKey(name: 'image_url')
+  String? get imageUrl;
 
   /// Create a copy of ProductModel
   /// with the given fields replaced by the non-null parameter values.
