@@ -30,7 +30,7 @@ class Category extends StatelessWidget {
           ),
           TextButton(
             onPressed: () {
-              if (vm.category.name!.isNotEmpty) {
+              if (vm.category.name?.isNotEmpty==true) {
                 vm.addCategory(vm.category, isUpdate, category?.id);
                 Navigator.pop(context);
               } else {
@@ -42,7 +42,7 @@ class Category extends StatelessWidget {
                 );
               }
             },
-            child: const Text("Add"),
+            child:  Text(isUpdate == true ? "Update" : "Add"),
           ),
         ],
       );
