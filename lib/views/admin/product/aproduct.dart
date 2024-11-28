@@ -119,8 +119,9 @@ class AProductScreen extends StatelessWidget {
         backgroundColor: Colors.teal,
         child: const Icon(Icons.add, color: Colors.white),
       ),
-      endDrawer: Container(  width: MediaQuery.of(context).size.width * 0.5,
-child: const AddProductDrawer()),
+      endDrawer: Container(
+          width: MediaQuery.of(context).size.width * 0.5,
+          child: const AddProductDrawer()),
     );
   }
 
@@ -203,7 +204,10 @@ child: const AddProductDrawer()),
                   top: Radius.circular(8),
                 ),
               ),
-              child: Image.network(product.imageUrl.toString(), fit: BoxFit.fill, ),
+              child: Image.network(
+                product.imageUrl.toString(),
+                fit: BoxFit.fill,
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
