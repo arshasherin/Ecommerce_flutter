@@ -203,7 +203,7 @@ child: const AddProductDrawer()),
                   top: Radius.circular(8),
                 ),
               ),
-              child: Image.network(product.imageUrl.toString()),
+              child: Image.network(product.imageUrl.toString(), fit: BoxFit.fill, ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
