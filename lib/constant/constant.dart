@@ -20,7 +20,7 @@ class CustomColors {
   static const primaryColors = Color(0xFF8B0000);
   static const backgroundColor = Color(0xffffffff);
   static const borderColor = Color(0xfff5f5f5);
-
+ 
   // Additional Colors
   static const secondary = Colors.black;
 

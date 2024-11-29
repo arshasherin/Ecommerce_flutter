@@ -1,45 +1,51 @@
 import 'package:ecommerce_flutter/models/product_model.dart';
+import 'package:ecommerce_flutter/views/admin/ahome/ahome.dart';
 import 'package:ecommerce_flutter/views/admin/product/add_product.dart';
 import 'package:ecommerce_flutter/views/admin/product/aproductVM.dart';
 import 'package:flutter/material.dart';
+import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
+
+import '../../../constant/constant.dart';
 
 class AProductScreen extends StatelessWidget {
   static const String routeName = '/a-product-screen';
-
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey, // Assign the key to the Scaffold
-      appBar: AppBar(
-        title: const Text(
-          'Products',
-          style: TextStyle(
-              fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
-        ),
-        backgroundColor: Colors.teal,
-        elevation: 4,
-        centerTitle: true,
-      ),
+      key: _scaffoldKey,
       body: Consumer<AProductVM>(
         builder: (context, productVM, child) {
           final categories = productVM.categoryWithProductsModel;
-
           if (categories.isEmpty && !productVM.isLoaded) {
             productVM.fetchCategories();
           }
-
           return categories.isEmpty
               ? const Center(child: CircularProgressIndicator())
               : Column(
                   children: [
-                    // Category Filter using Chips
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10,left: 8),
+                      child: Row(
+                        children: [
+                       SizedBox(
+                              height: 24, 
+                              width: 24, 
+                              child: IconButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  padding: EdgeInsets.zero,
+                                  icon: const Icon(Icons.arrow_back_ios_rounded, size: 20, color: Colors.black))),                        15.width,
+                          const Text('Products', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600, color: Colors.black)),
+                        ],
+                      ),
+                    ),
+                   15.height,
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 8),
+                      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
                       child: Row(
                         children: [
                           // "Show All" Chip
@@ -50,24 +56,20 @@ class AProductScreen extends StatelessWidget {
                           ),
                           // Category Chips
                           ...productVM.categories.map((category) {
-                            final isSelected =
-                                productVM.selectedCategoryId == category.id;
+                            final isSelected = productVM.selectedCategoryId == category.id;
 
                             return _buildCategoryChip(
                               label: category.name ?? 'No Category',
                               isSelected: isSelected,
-                              onSelected: () => productVM.fetchProducts(
-                                  categoryId: category.id),
+                              onSelected: () => productVM.fetchProducts(categoryId: category.id),
                             );
                           }).toList(),
                         ],
                       ),
                     ),
-
                     Expanded(
                       child: ListView.builder(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 8),
+                        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
                         itemCount: categories.length,
                         itemBuilder: (context, categoryIndex) {
                           final category = categories[categoryIndex];
@@ -82,7 +84,7 @@ class AProductScreen extends StatelessWidget {
                                 Container(
                                   padding: const EdgeInsets.all(12),
                                   decoration: BoxDecoration(
-                                    color: Colors.teal.withOpacity(0.1),
+                                    color: CustomColors.primaryColors.withOpacity(0.1),
                                     borderRadius: const BorderRadius.vertical(
                                       top: Radius.circular(10),
                                     ),
@@ -92,12 +94,12 @@ class AProductScreen extends StatelessWidget {
                                     style: const TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.w600,
-                                      color: Colors.teal,
+                                      color: CustomColors.primaryColors,
                                     ),
                                   ),
                                 ),
                                 Divider(
-                                  color: Colors.teal.withOpacity(0.3),
+                                  color: CustomColors.primaryColors.withOpacity(0.3),
                                   thickness: 1,
                                 ),
                                 _buildProductList(context, productVM, category),
@@ -113,15 +115,12 @@ class AProductScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          _scaffoldKey.currentState
-              ?.openEndDrawer(); // Use the Scaffold's key to open the drawer
+          _scaffoldKey.currentState?.openEndDrawer(); // Use the Scaffold's key to open the drawer
         },
-        backgroundColor: Colors.teal,
+        backgroundColor: CustomColors.primaryColors,
         child: const Icon(Icons.add, color: Colors.white),
       ),
-      endDrawer: Container(
-          width: MediaQuery.of(context).size.width * 0.5,
-          child: const AddProductDrawer()),
+      endDrawer: Container(width: MediaQuery.of(context).size.width * 0.5, child: const AddProductDrawer()),
     );
   }
 
@@ -138,31 +137,27 @@ class AProductScreen extends StatelessWidget {
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w500,
-            color: isSelected ? Colors.white : Colors.teal,
+            color: isSelected ? Colors.white : CustomColors.primaryColors,
           ),
         ),
         selected: isSelected,
-        selectedColor: Colors.teal,
-        backgroundColor: Colors.teal.withOpacity(0.2),
+        selectedColor: CustomColors.primaryColors,
+        backgroundColor: CustomColors.primaryColors.withOpacity(0.3),
         onSelected: (_) => onSelected(),
       ),
     );
   }
 
-  Widget _buildProductList(BuildContext context, AProductVM productVM,
-      CategoryWithProductsModel category) {
+  Widget _buildProductList(BuildContext context, AProductVM productVM, CategoryWithProductsModel category) {
     return ListView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.symmetric(vertical: 8),
-      itemCount: (category.products?.length ?? 0) ~/ 2 +
-          (category.products!.length % 2 == 0 ? 0 : 1),
+      itemCount: (category.products?.length ?? 0) ~/ 2 + (category.products!.length % 2 == 0 ? 0 : 1),
       itemBuilder: (context, rowIndex) {
         final startIndex = rowIndex * 2;
         final product1 = category.products![startIndex];
-        final product2 = (startIndex + 1 < category.products!.length)
-            ? category.products![startIndex + 1]
-            : null;
+        final product2 = (startIndex + 1 < category.products!.length) ? category.products![startIndex + 1] : null;
 
         return Row(
           children: [
@@ -181,8 +176,7 @@ class AProductScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildProductCard(
-      BuildContext context, AProductVM productVM, ProductModel product) {
+  Widget _buildProductCard(BuildContext context, AProductVM productVM, ProductModel product) {
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(5),
@@ -199,7 +193,7 @@ class AProductScreen extends StatelessWidget {
               height: 100,
               width: double.infinity,
               decoration: BoxDecoration(
-                color: Colors.teal.withOpacity(0.1),
+                color: CustomColors.primaryColors.withOpacity(0.1),
                 borderRadius: const BorderRadius.vertical(
                   top: Radius.circular(8),
                 ),
@@ -226,7 +220,7 @@ class AProductScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.edit, color: Colors.teal),
+                    icon: const Icon(Icons.edit, color: CustomColors.primaryColors),
                     onPressed: () {
                       _showUpdatePopup(context, productVM, product);
                     },
@@ -253,15 +247,14 @@ class AProductScreen extends StatelessWidget {
         'Price: \$${product.price?.toStringAsFixed(2) ?? '0.00'}',
         style: const TextStyle(
           fontSize: 12,
-          color: Colors.teal,
+          color: CustomColors.primaryColors,
           fontWeight: FontWeight.w500,
         ),
       ),
     );
   }
 
-  void _confirmDelete(
-      BuildContext context, AProductVM productVM, ProductModel product) {
+  void _confirmDelete(BuildContext context, AProductVM productVM, ProductModel product) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -285,8 +278,7 @@ class AProductScreen extends StatelessWidget {
     );
   }
 
-  void _showUpdatePopup(
-      BuildContext context, AProductVM vm, ProductModel product) {
+  void _showUpdatePopup(BuildContext context, AProductVM vm, ProductModel product) {
     // Local variables to temporarily store updated values
     String updatedName = product.name ?? '';
     String updatedDescription = product.description ?? '';
@@ -433,7 +425,7 @@ class ProductCard extends StatelessWidget {
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
-                color: Colors.teal,
+                color: CustomColors.primaryColors,
               ),
             ),
           ],
